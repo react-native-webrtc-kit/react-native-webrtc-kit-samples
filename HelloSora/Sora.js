@@ -1,0 +1,562 @@
+// @flow
+
+import EventTarget from 'event-target-shim';
+import {
+  RTCConfiguration,
+  RTCLogger as logger,
+  RTCEvent,
+  RTCIceServer,
+  RTCMediaStream,
+  RTCMediaStreamConstraints,
+  RTCPeerConnection,
+  RTCSessionDescription,
+  getUserMedia
+} from 'react-native-webrtc-kit';
+
+/**
+ * @typedef {string} SoraRole
+ */
+export type SoraRole =
+  | 'publisher'
+  | 'subscriber'
+  | 'group'
+  | 'groupsub'
+
+/**
+ * @typedef {string} SoraVideoCodec
+ */
+export type SoraVideoCodec =
+  | 'VP8'
+  | 'VP9'
+  | 'H264'
+
+/**
+ * @typedef {string} SoraAudioCodec
+ */
+export type SoraAudioCodec =
+  | 'OPUS'
+  | 'PCMU'
+
+/**
+ * @typedef {string} SoraConnectionState
+ */
+export type SoraConnectionState =
+  | 'new'
+  | 'connecting'
+  | 'connected'
+  | 'disconnected'
+
+/**
+ * @typedef {string} SoraSignalingType
+ */
+export type SoraSignalingType =
+  | 'connect'
+  | 'disconnect'
+  | 'offer'
+  | 'update'
+  | 'answer'
+  | 'pong'
+
+export class SoraEvent extends RTCEvent { }
+
+function roleToString(role: SoraRole): string {
+  switch (role) {
+    case 'publisher':
+    case 'group':
+      return 'upstream';
+    case 'subscriber':
+    case 'groupsub':
+      return 'downstream';
+    default:
+      throw new Error('unknown role');
+  }
+}
+
+export class SoraSignalingMessage {
+
+  type: SoraSignalingType;
+  role: SoraRole | null;
+  channelId: string | null;
+  metadata: string | null = null;
+  sdp: RTCSessionDescription | null = null;
+  multistream: bool | null = null;
+  video: boolean | Object | null = null;
+  audio: boolean | Object | null = null;
+  spotlight: number | null = null;
+  candidate: Object | null = null;
+
+  constructor(type: SoraSignalingType) {
+    this.type = type;
+  }
+
+  toJSON(): Object {
+    var json = {};
+    json.type = this.type;
+    if (this.role != null)
+      json.role = roleToString(this.role);
+    if (this.channelId != null)
+      json.channel_id = this.channelId;
+    if (this.metadata != null)
+      json.metadata = this.metadata;
+    if (this.sdp != null)
+      json.sdp = this.sdp.sdp;
+    if (this.multistream != null)
+      json.multistream = this.multistream;
+    if (this.video != null)
+      json.video = this.video;
+    if (this.audio != null)
+      json.audio = this.audio;
+    if (this.spotlight != null)
+      json.spotlight = this.spotlight;
+    if (this.candidate != null)
+      json.candidate = this.candidate;
+    return json;
+  }
+
+}
+
+/**
+ * @private
+ */
+export const SORA_EVENTS = [
+  'connectionstatechange',
+];
+
+/**
+ * @package
+ */
+export class SoraEventTarget extends EventTarget(SORA_EVENTS) { }
+
+var _peerConnConfig = new RTCConfiguration();
+_peerConnConfig.iceServers = [
+  new RTCIceServer(['stun:stun.services.mozilla.com']),
+  new RTCIceServer(['stun:stun.l.google.com:19302'])
+];
+const PEER_CONNECTION_CONFIG = _peerConnConfig;
+
+/**
+ * WebRTC SFU Sora サーバーとの接続を表すオブジェクトです。
+ * 
+ * ※ WebRTC SFU Sora は株式会社時雨堂の製品です。
+ * 
+ * @experimental Sora に関する API はすべてベータ機能です。
+ * @see https://sora.shiguredo.jp
+ */
+export class Sora extends SoraEventTarget {
+
+  /**
+   * Sora サーバーの URL
+   */
+  url: string;
+
+  /**
+   * ロール
+   */
+  role: SoraRole;
+
+  /**
+   * チャネル ID
+   */
+  channelId: string;
+
+  /**
+   * メタデータ
+   */
+  metadata: string | null = null;
+
+  /**
+   * 映像の有無
+   */
+  video: boolean | null = null;
+
+  /**
+   * 映像のコーデック
+   */
+  videoCodec: SoraVideoCodec | null = null;
+
+  /**
+   * 映像のビットレート
+   */
+  videoBitRate: number | null = null;
+
+  /**
+   * 音声の可否
+   */
+  audio: boolean | null = null;
+
+  /**
+   * 音声のコーデック
+   */
+  audioCodec: SoraAudioCodec | null = null;
+
+  /**
+   * 音声のビットレート
+   */
+  audioBitRate: number | null = null;
+
+  /**
+   * スポットライト機能の可否
+   */
+  spotlight: number | null = null;
+
+  /**
+   * 接続の状態
+   */
+  connectionState: SoraConnectionState = 'new';
+
+  _ws: WebSocket;
+  _pc: RTCPeerConnection;
+
+  constructor(url: string, role: SoraRole, channelId: string) {
+    super();
+    this.url = url;
+    this.role = role;
+    this.channelId = channelId;
+  }
+
+  // ---- Public ---- 
+
+  isUpstream(): boolean {
+    return this.role == 'publisher' || this.role == 'group';
+  }
+
+  isMultistream(): boolean {
+    return this.role == 'group' || this.role == 'groupsub';
+  }
+
+  _send(message: SoraSignalingMessage): void {
+    if (this._ws != null) {
+      logger.group("# Sora: send signaling message =>", message.type);
+      const json = JSON.stringify(message);
+      logger.log("# Sora: send WebSocket message =>", json);
+      this._ws.send(json);
+      logger.groupEnd();
+    }
+  }
+
+  connect(): void {
+    logger.log("# Sora: connect");
+    this._ws = new WebSocket(this.url);
+    this._ws.onopen = this._onWebSocketOpen.bind(this);
+    this._ws.onclose = this._onWebSocketClose.bind(this);
+    this._ws.onmessage = this._onWebSocketMessage.bind(this);
+    this._ws.onerror = this._onAnyError.bind(this);
+  }
+
+  disconnect(): void {
+    logger.log("# Sora: disconnect");
+    if (this._pc)
+      this._pc.close();
+    if (this._ws)
+      this._ws.close();
+    if (this.ondisconnect != null) {
+      this.ondisconnect();
+    }
+  }
+
+  getLocalStream(): RTCMediaStream | null {
+    if (this._pc == null) {
+      return null;
+    }
+    const streams = this._pc.getLocalStreams();
+    if (streams && streams.length > 0) {
+      return streams[0];
+    } else {
+      return null;
+    }
+  }
+
+  getRemoteStream(): RTCMediaStream | null {
+    if (this._pc == null) {
+      return null;
+    }
+    const streams = this._pc.getRemoteStreams();
+    if (streams && streams.length > 0) {
+      return streams[0];
+    } else {
+      return null;
+    }
+  }
+
+  addLocalStream(stream: RTCMediaStream): void {
+    if (this._pc == null) {
+      return;
+    }
+    this._pc.addLocalStream(stream);
+  }
+
+  // ---- Private ---- 
+
+  _setConnectionState(state: SoraConnectionState): void {
+    logger.log("# Sora: set connection state => ", state);
+    this.connectionState = state;
+    this.dispatchEvent(new RTCEvent('connectionstatechange'));
+  }
+
+  _createPeerConnection(): void {
+    logger.log("# create new peer connection");
+    this._pc = new RTCPeerConnection(PEER_CONNECTION_CONFIG);
+    this._pc.onconnectionstatechange = this._onConnectionStateChange.bind(this);
+    this._pc.onsignalingstatechange = this._onSignalingStateChange.bind(this);
+    this._pc.onicecandidate = this._onIceCandidate.bind(this);
+    this._pc.oniceconnectionstatechange = this._onIceConnectionStateChange.bind(this);
+    this._pc.onicegatheringstatechange = this._onIceGatheringStateChange.bind(this);
+    this._pc.onaddstream = this._onAddStream.bind(this);
+    this._pc.onremovestream = this._onRemoveStream.bind(this);
+  }
+
+  _onWebSocketOpen(): void {
+    logger.group("# Sora: WebSocket is opened");
+
+    if (!this._pc) {
+      this._createPeerConnection();
+    }
+    this._setConnectionState('connecting');
+
+    // クライアント情報としての Offer SDP を生成する
+    logger.log("# Sora: create offer SDP");
+    getUserMedia(null).then((offerStream) => {
+      var offerPc = new RTCPeerConnection(PEER_CONNECTION_CONFIG);
+      offerPc.addLocalStream(offerStream);
+      offerPc.createOffer(new RTCMediaStreamConstraints()).then((sdp) => {
+        logger.log("# Sora: offer => ", sdp.sdp);
+
+        // 一時的な peer connection なので捨ててよい
+        // peer connection が保持するストリームも閉じられる
+        offerPc.close();
+
+        // 新しいローカルストリームを生成する
+        getUserMedia(null).then((stream) => {
+          // upstream: ベースとなる peer connection にセットする
+          if (this.isUpstream()) {
+            logger.log("# Sora: add camera video stream");
+            this._pc.addLocalStream(stream);
+          }
+
+          // Offer SDP を含めた connect を送信する
+          var connect = new SoraSignalingMessage('connect');
+          connect.channelId = this.channelId;
+          connect.role = this.role;
+          connect.sdp = sdp;
+
+          // メタデータ
+          if (this.metadata != null)
+            connect.metadata = this.metadata;
+
+          // マルチストリームの設定
+          if (this.isMultistream())
+            connect.multistream = true;
+
+          // 映像の設定
+          if (this.video == false) {
+            connect.video = false;
+          } else {
+            if (this.videoCodec != null || this.videoBitRate != null) {
+              connect.video = {}
+              if (this.videoCodec != null)
+                connect.video.codec_type = this.videoCodec;
+              if (this.videoBitRate != null)
+                connect.video.bit_rate = this.videoBitRate;
+            } else if (this.video == true) {
+              connect.video = true;
+            }
+          }
+
+          // 音声の設定
+          if (this.audio == false) {
+            connect.audio = false;
+          } else {
+            if (this.audioCodec != null || this.audioBitRate != null) {
+              connect.audio = {}
+              if (this.audioCodec != null)
+                connect.audio.codec_type = this.audioCodec;
+              if (this.audioBitRate != null)
+                connect.audio.bit_rate = this.audioBitRate;
+            } else if (this.audio == true) {
+              connect.audio = true;
+            }
+          }
+
+          // スポットライトの設定
+          if (this.role == 'group' && this.spotlight != null) {
+            connect.spotlight = this.spotlight;
+          }
+
+          this._send(connect);
+        })
+      })
+    })
+
+    logger.groupEnd();
+  }
+
+  _onWebSocketClose(): void {
+    logger.log("# Sora: WebSocket is closed");
+    if (this._pc) {
+      this._pc.close();
+    }
+  }
+
+  _onWebSocketMessage(message: Object): void {
+    logger.group("# Sora: received WebSocket message");
+    const signal = JSON.parse(message.data);
+    logger.log("# Sora: signaling type => ", signal.type);
+    logger.log("# Sora: peer connection state => ",
+      this._pc.connectionState);
+
+    switch (signal.type) {
+      case 'offer':
+        logger.log("# Sora: signaling 'offer'");
+
+        // 'offer' で渡された設定を peer connection にセットする
+        let iceServers = [];
+        for (const iceServer of signal.config.iceServers) {
+          logger.log("# Sora: ICE server => ", iceServer);
+          for (const url of iceServer.urls) {
+            iceServers.push(new RTCIceServer(
+              iceServer.urls,
+              iceServer.username,
+              iceServer.credential));
+          }
+        }
+
+        this.config = new RTCConfiguration();
+        this.config.iceServers = iceServers;
+        this.config.iceTransportPolicy = signal.config.iceTransportPolicy;
+
+        logger.log('# Sora: set configuration => ', this.config);
+        this._pc.setConfiguration(this.config);
+
+        logger.log('# Sora: set remote description => ', signal);
+        this._pc.setRemoteDescription(new RTCSessionDescription(signal.type, signal.sdp))
+          .then(() => {
+            logger.log("# Sora: create answer");
+            return this._pc.createAnswer(this.config);
+          })
+          .then((description) => {
+            logger.log("# Sora: set local description => ", description);
+            return this._pc.setLocalDescription(description)
+              .then(() => {
+                const message = new SoraSignalingMessage('answer');
+                message.sdp = description;
+                this._send(message);
+              })
+          })
+          .catch(this._onAnyError.bind(this));
+        break;
+
+      case 'update':
+        logger.log("# Sora: signaling 'update'");
+        if (!this.isMultistream())
+          break;
+
+        logger.log('# Sora: set configuration => ', this.config);
+        this._pc.setConfiguration(this.config);
+
+        logger.log('# Sora: set remote description => ', signal);
+        this._pc.setRemoteDescription(new RTCSessionDescription(signal.type, signal.sdp))
+          .then(() => {
+            logger.log("# Sora: create 'update' answer");
+            return this._pc.createAnswer(this.config);
+          })
+          .then((description) => {
+            logger.log("# Sora: set local description => ", description);
+            return this._pc.setLocalDescription(description)
+              .then(() => {
+                var message = new SoraSignalingMessage('update');
+                message.sdp = description;
+                this._send(message);
+              })
+          })
+          .catch(this._onAnyError.bind(this));
+        break;
+
+      case 'notify':
+        logger.log("# Sora: signaling 'notify' => ", signal);
+        break;
+
+      case 'ping':
+        logger.log("# Sora: signaling 'ping'");
+        // ping-pong
+        this._ws.send(JSON.stringify({ 'type': 'pong' }))
+        break;
+
+      default:
+        logger.log("# Sora: signaling unknown");
+        // type 不明のメッセージは捨てる
+        break;
+    }
+
+    logger.groupEnd();
+  }
+
+  _onConnectionStateChange(event: RTCEvent): void {
+    logger.group("# Sora: connection state changed => ", event.type);
+
+    const oldState = this.connectionState;
+    var newState = this.connectionState;
+    switch (this._pc.connectionState) {
+      case 'new':
+        newState = 'new';
+        break;
+      case 'connecting':
+        newState = 'connecting';
+        break;
+      case 'connected':
+        newState = 'connected';
+        break;
+      case 'failed':
+      case 'closed':
+        newState = 'disconnected';
+        break;
+      default:
+        return;
+    }
+
+    logger.log("# Sora: set new connection state => ", newState);
+    this.connectionState = newState;
+    if (oldState != newState) {
+      this.dispatchEvent(new SoraEvent('connectionstatechange'));
+    }
+
+    logger.groupEnd();
+  }
+
+  _onSignalingStateChange(event: Object): void {
+    logger.log("# Sora: peer connection signaling state changed => ", event.type);
+  }
+
+  _onIceCandidate(event: Object): void {
+    logger.group("# Sora: ICE candidate changed");
+    if (event.candidate != null) {
+      var msg = JSON.stringify({
+        'type': 'candidate',
+        'candidate': event.candidate.candidate
+      });
+      logger.log('# Sora: send candidate => ', msg);
+      this._ws.send(msg);
+    }
+    logger.groupEnd();
+  }
+
+  _onIceConnectionStateChange(event: Object): void {
+    logger.log("# Sora: ICE connection state changed");
+  }
+
+  _onIceGatheringStateChange(): void {
+    logger.log("# Sora: ICE gathering state changed");
+  }
+
+  _onAddStream(event: Object): void {
+    logger.log("# Sora: stream added");
+  }
+
+  _onRemoveStream(event: Object): void {
+    logger.log("# Sroa: stream removed");
+  }
+
+  _onAnyError(error: Object): void {
+    logger.log("# Sora: any error => ", error);
+  }
+
+}
