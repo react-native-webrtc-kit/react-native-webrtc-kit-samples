@@ -8,12 +8,20 @@ import {
 } from 'react-native';
 import {
   Paper,
+  Title,
   Text,
   TextInput,
   Button,
   Checkbox
 } from 'react-native-paper';
-import { RTCVideoView, RTCLogger as logger } from 'react-native-webrtc-kit';
+import {
+  RTCMediaStreamTrack,
+  RTCRtpSender,
+  RTCRtpReceiver,
+  RTCVideoView,
+  RTCObjectFit,
+  RTCLogger as logger
+} from 'react-native-webrtc-kit';
 import { Sora } from './Sora';
 import { url, defaultChannelId } from './app.json';
 
@@ -26,8 +34,9 @@ type State = {
   multistream: bool,
   pubConn: Sora | null,
   subConn: Sora | null,
-  pubStreamValueTag: string | null,
-  subStreamValueTag: string | null
+  sender: RTCRtpSender | null;
+  receiver: RTCRtpReceiver | null;
+  objectFit: RTCObjectFit
 };
 
 export default class App extends Component<Props, State> {
@@ -39,8 +48,9 @@ export default class App extends Component<Props, State> {
       multistream: false,
       pubConn: null,
       subConn: null,
-      pubStreamValueTag: null,
-      subStreamValueTag: null
+      sender: null,
+      receiver: null,
+      objectFit: 'cover'
     };
   }
 
@@ -54,15 +64,15 @@ export default class App extends Component<Props, State> {
           <Paper style={styles.div_header}>
             <RTCVideoView
               style={styles.videoview}
-              streamValueTag={this.state.pubStreamValueTag}
-              objectFit='contain'
+              track={this.state.sender ? this.state.sender.track : null}
+              objectFit={this.state.objectFit}
             />
           </Paper>
           <Paper style={styles.div_header}>
             <RTCVideoView
               style={styles.videoview}
-              streamValueTag={this.state.subStreamValueTag}
-              objectFit='contain'
+              track={this.state.receiver ? this.state.receiver.track : null}
+              objectFit={this.state.objectFit}
             />
           </Paper>
           <View style={{ flex: 1, flexDirection: 'column' }}>
@@ -106,11 +116,11 @@ export default class App extends Component<Props, State> {
                       logger.log("# publisher connection state change => ",
                         event.target.connectionState);
                       if (event.target.connectionState == 'connected') {
-                        logger.log("# publisher connection connected");
-                        const stream = prev.pubConn.getLocalStream();
-                        const valueTag = stream ? stream.valueTag : null;
-                        logger.log("# publisher react stream id => ", valueTag);
-                        return { pubStreamValueTag: valueTag }
+                        var sender = prev.pubConn._pc.senders.find(each => {
+                          return each.track.kind == 'video'
+                        });
+                        logger.log("# publisher connection connected =>", sender);
+                        return { sender: sender }
                       }
                     });
                   }.bind(this);
@@ -132,11 +142,11 @@ export default class App extends Component<Props, State> {
                       logger.log("# subscriber connection state change => ",
                         event.target.connectionState);
                       if (event.target.connectionState == 'connected') {
-                        logger.log("# subscriber connection connected");
-                        const stream = prev.subConn.getRemoteStream();
-                        const valueTag = stream ? stream.valueTag : null;
-                        logger.log("# subscriber react stream id => ", valueTag);
-                        return { subStreamValueTag: valueTag };
+                        var recv = prev.subConn._pc.receivers.find(each => {
+                          return each.track.kind == 'video'
+                        });
+                        logger.log("# subscriber connection connected =>", recv);
+                        return { receiver: recv }
                       }
                     });
                   }.bind(this);
