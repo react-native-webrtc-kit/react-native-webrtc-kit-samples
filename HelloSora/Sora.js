@@ -1,11 +1,13 @@
 // @flow
 
+import { NativeModules } from 'react-native';
 import EventTarget from 'event-target-shim';
 import {
   RTCConfiguration,
   RTCLogger as logger,
   RTCEvent,
   RTCIceServer,
+  RTCMediaConstraints,
   RTCMediaStream,
   RTCMediaStreamConstraints,
   RTCPeerConnection,
@@ -278,13 +280,6 @@ export class Sora extends SoraEventTarget {
     }
   }
 
-  addLocalStream(stream: RTCMediaStream): void {
-    if (this._pc == null) {
-      return;
-    }
-    this._pc.addLocalStream(stream);
-  }
-
   // ---- Private ---- 
 
   _setConnectionState(state: SoraConnectionState): void {
@@ -303,6 +298,8 @@ export class Sora extends SoraEventTarget {
     this._pc.onicegatheringstatechange = this._onIceGatheringStateChange.bind(this);
     this._pc.onaddstream = this._onAddStream.bind(this);
     this._pc.onremovestream = this._onRemoveStream.bind(this);
+    this._pc.onaddtrack = this._onAddTrack.bind(this);
+    this._pc.onremovetrack = this._onRemoveTrack.bind(this);
   }
 
   _onWebSocketOpen(): void {
@@ -315,9 +312,12 @@ export class Sora extends SoraEventTarget {
 
     // クライアント情報としての Offer SDP を生成する
     logger.log("# Sora: create offer SDP");
-    getUserMedia(null).then((offerStream) => {
+    getUserMedia(null).then((info) => {
       var offerPc = new RTCPeerConnection(PEER_CONNECTION_CONFIG);
-      offerPc.addLocalStream(offerStream);
+      logger.log("# Sora: getUserMedia: get info =>", info);
+      info.tracks.forEach(track =>
+        offerPc.addTrack(track, [info.streamId])
+      );
       offerPc.createOffer(new RTCMediaStreamConstraints()).then((sdp) => {
         logger.log("# Sora: offer => ", sdp.sdp);
 
@@ -326,11 +326,15 @@ export class Sora extends SoraEventTarget {
         offerPc.close();
 
         // 新しいローカルストリームを生成する
-        getUserMedia(null).then((stream) => {
+        var streamConsts = new RTCMediaStreamConstraints();
+        getUserMedia(streamConsts).then((info) => {
           // upstream: ベースとなる peer connection にセットする
           if (this.isUpstream()) {
             logger.log("# Sora: add camera video stream");
-            this._pc.addLocalStream(stream);
+            info.tracks.forEach(track =>
+              this._pc.addTrack(track, [info.streamId])
+                .catch(e => { throw new Error(e) })
+            );
           }
 
           // Offer SDP を含めた connect を送信する
@@ -427,7 +431,7 @@ export class Sora extends SoraEventTarget {
         logger.log('# Sora: set configuration => ', this.config);
         this._pc.setConfiguration(this.config);
 
-        logger.log('# Sora: set remote description => ', signal);
+        logger.log('# Sora: offer set remote description => ', signal);
         this._pc.setRemoteDescription(new RTCSessionDescription(signal.type, signal.sdp))
           .then(() => {
             logger.log("# Sora: create answer");
@@ -442,7 +446,9 @@ export class Sora extends SoraEventTarget {
                 this._send(message);
               })
           })
-          .catch(this._onAnyError.bind(this));
+          .catch((description) => {
+            logger.log("# Sora: offer: set remote description failed => ", description);
+          });
         break;
 
       case 'update':
@@ -553,6 +559,14 @@ export class Sora extends SoraEventTarget {
 
   _onRemoveStream(event: Object): void {
     logger.log("# Sroa: stream removed");
+  }
+
+  _onAddTrack(event: Object): void {
+    logger.log("# Sora: track added =>", event);
+  }
+
+  _onRemoveTrack(event: Object): void {
+    logger.log("# Sora: track removed =>", event);
   }
 
   _onAnyError(error: Object): void {

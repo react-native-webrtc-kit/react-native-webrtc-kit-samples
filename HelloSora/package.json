@@ -1,13 +1,13 @@
 {
-  "name": "HelloSora",
-  "version": "1.0.0",
+  "name": "hellosora",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
   "dependencies": {
-    "react-native-webrtc-kit": "^1.0.0",
+    "react-native-webrtc-kit": "^1.1.0",
     "react": "16.4.1",
     "react-native": "0.56.0",
     "react-native-paper": "^1.11.0",
