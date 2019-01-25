@@ -129,13 +129,6 @@ export const SORA_EVENTS = [
  */
 export class SoraEventTarget extends EventTarget(SORA_EVENTS) { }
 
-var _peerConnConfig = new RTCConfiguration();
-_peerConnConfig.iceServers = [
-  new RTCIceServer(['stun:stun.services.mozilla.com']),
-  new RTCIceServer(['stun:stun.l.google.com:19302'])
-];
-const PEER_CONNECTION_CONFIG = _peerConnConfig;
-
 /**
  * WebRTC SFU Sora サーバーとの接続を表すオブジェクトです。
  * 
@@ -206,6 +199,8 @@ export class Sora extends SoraEventTarget {
    */
   connectionState: SoraConnectionState = 'new';
 
+  configuration: RTCConfiguration;
+
   _ws: WebSocket;
   _pc: RTCPeerConnection;
 
@@ -214,6 +209,13 @@ export class Sora extends SoraEventTarget {
     this.url = url;
     this.role = role;
     this.channelId = channelId;
+
+    this.configuration = new RTCConfiguration();
+    this.configuration.iceServers = [
+      new RTCIceServer(['stun:stun.services.mozilla.com']),
+      new RTCIceServer(['stun:stun.l.google.com:19302'])
+    ];
+    this.configuration.sdpSemantics = 'unified';
   }
 
   // ---- Public ---- 
@@ -290,7 +292,7 @@ export class Sora extends SoraEventTarget {
 
   _createPeerConnection(): void {
     logger.log("# create new peer connection");
-    this._pc = new RTCPeerConnection(PEER_CONNECTION_CONFIG);
+    this._pc = new RTCPeerConnection(this.configuration);
     this._pc.onconnectionstatechange = this._onConnectionStateChange.bind(this);
     this._pc.onsignalingstatechange = this._onSignalingStateChange.bind(this);
     this._pc.onicecandidate = this._onIceCandidate.bind(this);
@@ -313,7 +315,7 @@ export class Sora extends SoraEventTarget {
     // クライアント情報としての Offer SDP を生成する
     logger.log("# Sora: create offer SDP");
     getUserMedia(null).then((info) => {
-      var offerPc = new RTCPeerConnection(PEER_CONNECTION_CONFIG);
+      var offerPc = new RTCPeerConnection(this.configuration);
       logger.log("# Sora: getUserMedia: get info =>", info);
       info.tracks.forEach(track =>
         offerPc.addTrack(track, [info.streamId])
@@ -411,6 +413,7 @@ export class Sora extends SoraEventTarget {
     switch (signal.type) {
       case 'offer':
         logger.log("# Sora: signaling 'offer'");
+        logger.log("# Sora: configuration =>", signal.config);
 
         // 'offer' で渡された設定を peer connection にセットする
         let iceServers = [];
@@ -424,18 +427,17 @@ export class Sora extends SoraEventTarget {
           }
         }
 
-        this.config = new RTCConfiguration();
-        this.config.iceServers = iceServers;
-        this.config.iceTransportPolicy = signal.config.iceTransportPolicy;
+        this.configuration.iceServers = iceServers;
+        this.configuration.iceTransportPolicy = signal.config.iceTransportPolicy;
 
-        logger.log('# Sora: set configuration => ', this.config);
-        this._pc.setConfiguration(this.config);
+        logger.log('# Sora: set configuration => ', this.configuration);
+        this._pc.setConfiguration(this.configuration);
 
         logger.log('# Sora: offer set remote description => ', signal);
         this._pc.setRemoteDescription(new RTCSessionDescription(signal.type, signal.sdp))
           .then(() => {
             logger.log("# Sora: create answer");
-            return this._pc.createAnswer(this.config);
+            return this._pc.createAnswer(this.configuration);
           })
           .then((description) => {
             logger.log("# Sora: set local description => ", description);
@@ -456,14 +458,14 @@ export class Sora extends SoraEventTarget {
         if (!this.isMultistream())
           break;
 
-        logger.log('# Sora: set configuration => ', this.config);
-        this._pc.setConfiguration(this.config);
+        logger.log('# Sora: set configuration => ', this.configuration);
+        this._pc.setConfiguration(this.configuration);
 
         logger.log('# Sora: set remote description => ', signal);
         this._pc.setRemoteDescription(new RTCSessionDescription(signal.type, signal.sdp))
           .then(() => {
             logger.log("# Sora: create 'update' answer");
-            return this._pc.createAnswer(this.config);
+            return this._pc.createAnswer(this.configuration);
           })
           .then((description) => {
             logger.log("# Sora: set local description => ", description);
