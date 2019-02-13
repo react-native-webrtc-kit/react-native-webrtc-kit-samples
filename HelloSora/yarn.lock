@@ -4112,10 +4112,10 @@ react-native-vector-icons@^4.6.0:
     prop-types "^15.5.10"
     yargs "^8.0.2"
 
-react-native-webrtc-kit@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-webrtc-kit/-/react-native-webrtc-kit-2.0.0.tgz#126017e121a6985ed18cc2d401ba116ffd924a9f"
-  integrity sha512-L4cjJX1e4NoWyCxL3PoNdDgtXuzOqAAfJ+ySsoxqAIpjj1XKHt5SLrKDWj8WiT1ptz5vBG9AmnTASAgw7oIYFw==
+react-native-webrtc-kit@2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-webrtc-kit/-/react-native-webrtc-kit-2.1.1.tgz#9c267bad3e50f955e7e74b3fd324d029b6127d60"
+  integrity sha512-UtOid6rxSoTW2FfvqEWJCNkmJEBSyOTPanGv+q7JSXO6YF2hwG3xUoOoFwUyYcuNl/ROYuBQATRCrQ2UVitdnQ==
   dependencies:
     event-target-shim "^3.0.2"
     prop-types "^15.6.2"
