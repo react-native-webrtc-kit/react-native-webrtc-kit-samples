@@ -7,10 +7,10 @@ import {
   View
 } from 'react-native';
 import {
-  Paper,
   Title,
   Text,
   TextInput,
+  Switch,
   Button,
   Checkbox
 } from 'react-native-paper';
@@ -61,52 +61,55 @@ export default class App extends Component<Props, State> {
           <Text style={styles.instructions}>
             {instructions}
           </Text>
-          <Paper style={styles.div_header}>
+          <View style={styles.div_header}>
             <RTCVideoView
               style={styles.videoview}
               track={this.state.sender ? this.state.sender.track : null}
               objectFit={this.state.objectFit}
             />
-          </Paper>
-          <Paper style={styles.div_header}>
+          </View>
+          <View style={styles.div_header}>
             <RTCVideoView
               style={styles.videoview}
               track={this.state.receiver ? this.state.receiver.track : null}
               objectFit={this.state.objectFit}
             />
-          </Paper>
+          </View>
           <View style={{ flex: 1, flexDirection: 'column' }}>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <Text style={{ width: '50%' }}>
-                チャネルID
-          </Text>
-              <TextInput
-                style={{
-                  width: '50%',
-                  height: 40,
-                  borderColor: 'gray'
-                }}
-                onChangeText={(channelId) =>
+            <TextInput
+              label="チャネルID"
+              mode="outlined"
+              style={{
+                width: '100%',
+                height: 60,
+                borderColor: 'gray'
+              }}
+              onChangeText={(channelId) =>
                   this.setState({ channelId: channelId })
-                }
-                value={this.state.channelId}
-                placeholder='Channel ID'
-              />
-            </View>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <Text>マルチストリーム</Text>
-              <Checkbox
-                color='blue'
-                checked={this.state.multistream}
-                onPress={(value) => {
+              }
+              value={this.state.channelId}
+              placeholder='Channel ID'
+            />
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+              <Switch
+                value={this.state.multistream}
+                onValueChange={() => {
                   this.setState({ multistream: !this.state.multistream });
                 }}
               />
+              <Text
+                onPress={(value) => {
+                  this.setState({ multistream: !this.state.multistream });
+                }}
+              >
+                マルチストリーム
+              </Text>
             </View>
           </View>
           <View>
             <Button
               raised
+              mode="outlined"
               onPress={() => {
                 this.setState(prev => {
                   const role = this.state.multistream ? 'group' : 'publisher';
@@ -130,9 +133,10 @@ export default class App extends Component<Props, State> {
               }}
             >
               パブリッシャーで接続する
-          </Button>
+            </Button>
             <Button
               raised
+              mode="outlined"
               onPress={() => {
                 this.setState(prev => {
                   const role = this.state.multistream ? 'groupsub' : 'subscriber';
@@ -156,9 +160,10 @@ export default class App extends Component<Props, State> {
               }}
             >
               サブスクライバーで接続する
-          </Button>
+            </Button>
             <Button
               raised
+              mode="outlined"
               onPress={() => {
                 logger.log("# disconnect");
                 if (this.state.pubConn) {
@@ -178,7 +183,7 @@ export default class App extends Component<Props, State> {
               }}
             >
               接続解除する
-          </Button>
+            </Button>
           </View>
         </View>
       </View >
