@@ -17,6 +17,10 @@ target 'HelloSora' do
 
   # このコメントの直下の行に、追加のreact-nativeネイティブモジュールがインストールされていきます。本ライブラリも以下に追加されます。
   # Add new pods below this line
+  pod 'ReactNativeWebRTCKit', :path => '../node_modules/react-native-webrtc-kit'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
 
 end
 
