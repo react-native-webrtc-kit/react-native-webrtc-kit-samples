@@ -7,17 +7,38 @@ platform :ios, '12.0'
 # ビルドに失敗する可能性があるため、 use_frameworks! の使用は推奨しません。
 # use_frameworks!
 
-node_modules_path = '../node_modules'
+react_native_path = '../node_modules/react-native'
 
 target 'HelloSora' do
 
-  # 以下の 2 行を追加しないとビルドに失敗する可能性があります。
-  pod 'yoga', path: "#{node_modules_path}/react-native/ReactCommon/yoga/yoga.podspec"
-  pod 'React', path: "#{node_modules_path}/react-native"
+  pod 'React', path: "#{react_native_path}"
+
+  pod 'React-Core', :path => "#{react_native_path}/React"
+  pod 'React-DevSupport', :path => "#{react_native_path}/React"
+
+  pod 'React-RCTActionSheet', :path => "#{react_native_path}/Libraries/ActionSheetIOS"
+  pod 'React-RCTAnimation', :path => "#{react_native_path}/Libraries/NativeAnimation"
+  pod 'React-RCTBlob', :path => "#{react_native_path}/Libraries/Blob"
+  pod 'React-RCTImage', :path => "#{react_native_path}/Libraries/Image"
+  pod 'React-RCTNetwork', :path => "#{react_native_path}/Libraries/Network"
+  pod 'React-RCTWebSocket', :path => "#{react_native_path}/Libraries/WebSocket"
+  pod 'React-RCTLinking', :path => "#{react_native_path}/Libraries/LinkingIOS"
+  pod 'React-RCTSettings', :path => "#{react_native_path}/Libraries/Settings"
+  pod 'React-RCTText', :path => "#{react_native_path}/Libraries/Text"
+  pod 'React-fishhook', :path => "#{react_native_path}/Libraries/fishhook"
+  pod 'React-RCTVibration', :path => "#{react_native_path}//Libraries/Vibration"
+
+  pod 'React-cxxreact', :path => "#{react_native_path}/ReactCommon/cxxreact"
+  pod 'React-jsiexecutor', :path => "#{react_native_path}/ReactCommon/jsiexecutor"
+  pod 'React-jsinspector', :path => "#{react_native_path}/ReactCommon/jsinspector"
+  pod 'React-jsi', :path => "#{react_native_path}/ReactCommon/jsi"
+  pod 'yoga', path: "#{react_native_path}/ReactCommon/yoga"
+
+  pod 'DoubleConversion', :podspec => "#{react_native_path}/third-party-podspecs/DoubleConversion.podspec"
+  pod 'Folly', :podspec => "#{react_native_path}/third-party-podspecs/Folly.podspec"
 
   # このコメントの直下の行に、追加のreact-nativeネイティブモジュールがインストールされていきます。本ライブラリも以下に追加されます。
   # Add new pods below this line
-
 end
 
 # `libReact.a` の衝突を回避する処理を記述します。
