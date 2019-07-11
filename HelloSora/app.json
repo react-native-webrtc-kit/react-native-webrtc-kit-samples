@@ -2,5 +2,5 @@
   "name": "HelloSora",
   "displayName": "HelloSora",
   "url": "ws://example.com/signaling",
-  "defaultChannelId": "react-native-webrctc-kit"
+  "defaultChannelId": "react-native-webrtc-kit"
 }

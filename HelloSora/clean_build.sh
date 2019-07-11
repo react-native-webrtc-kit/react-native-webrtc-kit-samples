@@ -9,5 +9,5 @@ rm -rf ios/Podfile.lock
 git checkout ios/Podfile
 yarn install
 react-native unlink react-native-webrtc-kit
-react-native link
+react-native link react-native-webrtc-kit
 cd ios; pod install
