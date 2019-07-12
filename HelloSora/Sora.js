@@ -1,6 +1,6 @@
 // @flow
 
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import EventTarget from 'event-target-shim';
 import {
   RTCConfiguration,
@@ -301,7 +301,10 @@ export class Sora extends SoraEventTarget {
     this._pc.onaddstream = this._onAddStream.bind(this);
     this._pc.onremovestream = this._onRemoveStream.bind(this);
     this._pc.onaddtrack = this._onAddTrack.bind(this);
-    this._pc.onremovetrack = this._onRemoveTrack.bind(this);
+    if (Platform.OS === 'ios') {
+      // Android は現状 onRemoveTrack を検知できないので、iOS のみ onRemoveTrack を bind している。
+      this._pc.onremovetrack = this._onRemoveTrack.bind(this);
+    }
   }
 
   _onWebSocketOpen(): void {
