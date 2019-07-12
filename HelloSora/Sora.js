@@ -456,29 +456,30 @@ export class Sora extends SoraEventTarget {
       case 'update':
         logger.log("# Sora: signaling 'update'");
         if (!this.isMultistream())
+          logger.log("# Sora: not multistream, skipping");
           break;
-
         logger.log('# Sora: set configuration => ', this.configuration);
         this._pc.setConfiguration(this.configuration);
-
-        logger.log('# Sora: set remote description => ', signal);
-        this._pc.setRemoteDescription(new RTCSessionDescription(signal.type, signal.sdp))
-          .then(() => {
-            logger.log("# Sora: create 'update' answer");
-            return this._pc.createAnswer(this.configuration);
-          })
-          .then((description) => {
-            logger.log("# Sora: set local description => ", description);
-            return this._pc.setLocalDescription(description)
-              .then(() => {
-                var message = new SoraSignalingMessage('update');
-                message.sdp = description;
-                this._send(message);
-              })
-          })
-          .catch(this._onAnyError.bind(this));
+        if (signal.sdp !== null) {
+          logger.log('# Sora: set remote description => ', signal);
+          const sessionDescription = new RTCSessionDescription('offer', signal.sdp);
+          this._pc.setRemoteDescription(sessionDescription)
+            .then(() => {
+              logger.log("# Sora: create 'update' answer");
+              return this._pc.createAnswer(this.configuration);
+            })
+            .then((description) => {
+              logger.log("# Sora: set local description => ", description);
+              return this._pc.setLocalDescription(description)
+                .then(() => {
+                  var message = new SoraSignalingMessage('update');
+                  message.sdp = description;
+                  this._send(message);
+                })
+            })
+            .catch(this._onAnyError.bind(this));
+        }
         break;
-
       case 'notify':
         logger.log("# Sora: signaling 'notify' => ", signal);
         break;
