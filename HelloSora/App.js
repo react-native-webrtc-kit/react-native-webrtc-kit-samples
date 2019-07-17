@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
-  View
+  View,
+  PermissionsAndroid
 } from 'react-native';
 import {
   Title,
@@ -39,6 +40,32 @@ type State = {
   objectFit: RTCObjectFit
 };
 
+async function requestCameraPermissionAndroid() {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+      {
+        title: 'App Camera Permission',
+        message: 'WebRTC のテストのため利用します',
+        buttonNeutral: '後で',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      return true;
+    } else {
+      // リクエストが無効
+      console.log('Camera permission denied');
+      return false;
+    }
+  } catch (err) {
+    console.warn(err);
+    return false;
+  }
+}
+
+
 export default class App extends Component<Props, State> {
 
   constructor(props: Object) {
@@ -52,6 +79,14 @@ export default class App extends Component<Props, State> {
       receiver: null,
       objectFit: 'cover'
     };
+  }
+
+  componentDidMount()
+    // Android の場合カメラの権限をリクエストする
+    // XXX(kdxu): 厳密には拒否された場合の処理がいるはず。
+    if (Platform.OS === 'android') {
+      requestCameraPermissionAndroid()
+    }
   }
 
   render() {
