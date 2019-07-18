@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
-  View
+  View,
+  PermissionsAndroid
 } from 'react-native';
 import {
   Title,
@@ -39,6 +40,21 @@ type State = {
   objectFit: RTCObjectFit
 };
 
+async function requestPermissionsAndroid() {
+  try {
+    await PermissionsAndroid.requestMultiple(
+      [
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+      ]
+    );
+  } catch (err) {
+    console.warn(err);
+  }
+}
+
+
 export default class App extends Component<Props, State> {
 
   constructor(props: Object) {
@@ -52,6 +68,14 @@ export default class App extends Component<Props, State> {
       receiver: null,
       objectFit: 'cover'
     };
+  }
+
+  componentDidMount() {
+    // Android の場合カメラの権限をリクエストする
+    // XXX(kdxu): 厳密には拒否された場合の処理がいるはず。
+    if (Platform.OS === 'android') {
+      requestPermissionsAndroid()
+    }
   }
 
   render() {
