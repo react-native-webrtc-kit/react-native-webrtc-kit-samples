@@ -561,7 +561,7 @@ export class Sora extends SoraEventTarget {
   }
 
   _onRemoveStream(event: Object): void {
-    logger.log("# Sroa: stream removed");
+    logger.log("# Sora: stream removed");
   }
 
   _onAddTrack(event: Object): void {
