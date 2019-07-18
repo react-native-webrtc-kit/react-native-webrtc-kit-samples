@@ -83,10 +83,10 @@ PODS:
     - React-fishhook (= 0.60.0)
   - ReactNativeWebRTCKit (2.1.2):
     - React
-    - WebRTC (~> 70.17.0)
+    - WebRTC (~> 75.11.0)
   - RNVectorIcons (6.6.0):
     - React
-  - WebRTC (70.17.0)
+  - WebRTC (75.11.0)
   - yoga (0.60.0.React)
 
 DEPENDENCIES:
@@ -194,11 +194,11 @@ SPEC CHECKSUMS:
   React-RCTText: 685fca2e13b024271048e7e247ef24476f28a41e
   React-RCTVibration: 4ee1cf208ab17a50fafb1c16ffe28fe594a64e4f
   React-RCTWebSocket: fca087d583724aa0e5fef7d911f0f2a28d0f2736
-  ReactNativeWebRTCKit: 4c8f6d1853cb1f22238362c04f7d916c361744b4
+  ReactNativeWebRTCKit: 59ef280c464cb026c93600d374be809c42dbcfa9
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
-  WebRTC: b1bcb659d05244a95ad4e33cd80b0e96176ee39a
+  WebRTC: c95faa64c1255a0f214c578e681acf96d8b0edd5
   yoga: 616fde658be980aa60a2158835170f3f9c2d04b4
 
-PODFILE CHECKSUM: 72e35e85c629215ba4b2c493559a8a05529177bb
+PODFILE CHECKSUM: 0be0861650e5b8b439d6587954eac2d6cf154a6c
 
-COCOAPODS: 1.7.3
+COCOAPODS: 1.7.4
