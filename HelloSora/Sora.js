@@ -300,7 +300,7 @@ export class Sora extends SoraEventTarget {
     this._pc.onicegatheringstatechange = this._onIceGatheringStateChange.bind(this);
     this._pc.onaddstream = this._onAddStream.bind(this);
     this._pc.onremovestream = this._onRemoveStream.bind(this);
-    this._pc.onaddtrack = this._onAddTrack.bind(this);
+    this._pc.ontrack = this._onTrack.bind(this);
     if (Platform.OS === 'ios') {
       // Android は現状 onRemoveTrack を検知できないので、iOS のみ onRemoveTrack を bind している。
       this._pc.onremovetrack = this._onRemoveTrack.bind(this);
@@ -502,11 +502,11 @@ export class Sora extends SoraEventTarget {
     logger.groupEnd();
   }
 
-  _onConnectionStateChange(event: RTCEvent): void {
+  _onConnectionStateChange(event: Object): void {
     logger.group("# Sora: connection state changed => ", event.type);
 
     const oldState = this.connectionState;
-    var newState = this.connectionState;
+    var newState = this._pc.connectionState;
     switch (this._pc.connectionState) {
       case 'new':
         newState = 'new';
@@ -564,11 +564,12 @@ export class Sora extends SoraEventTarget {
   }
 
   _onRemoveStream(event: Object): void {
-    logger.log("# Sroa: stream removed");
+    logger.log("# Sora: stream removed");
   }
 
-  _onAddTrack(event: Object): void {
-    logger.log("# Sora: track added =>", event);
+  _onTrack(event: Object): void {
+    logger.log("# Sora: track added =>", event.track);
+    this.dispatchEvent(new SoraEvent('track', event));
   }
 
   _onRemoveTrack(event: Object): void {

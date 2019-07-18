@@ -5263,9 +5263,9 @@ react-native-vector-icons@^6.6.0:
     prop-types "^15.6.2"
     yargs "^13.2.2"
 
-"react-native-webrtc-kit@git+https://github.com/shiguredo/react-native-webrtc-kit#34e90ca":
+"react-native-webrtc-kit@git+https://github.com/shiguredo/react-native-webrtc-kit#2591730f":
   version "2.1.2"
-  resolved "git+https://github.com/shiguredo/react-native-webrtc-kit#34e90cacb15161138cb8505fc17ed471476eb2ae"
+  resolved "git+https://github.com/shiguredo/react-native-webrtc-kit#2591730f94d4770e170d6f1f00fd76192efd572c"
   dependencies:
     event-target-shim "^3.0.2"
     prop-types "^15.6.2"

@@ -40,53 +40,17 @@ type State = {
   objectFit: RTCObjectFit
 };
 
-async function requestCameraPermissionAndroid() {
+async function requestPermissionsAndroid() {
   try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.CAMERA,
-      {
-        title: 'App Camera Permission',
-        message: 'WebRTC のテストのため利用します',
-        buttonNeutral: '後で',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
+    await PermissionsAndroid.requestMultiple(
+      [
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+      ]
     );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      return true;
-    } else {
-      // リクエストが無効
-      console.log('Camera permission denied');
-      return false;
-    }
   } catch (err) {
     console.warn(err);
-    return false;
-  }
-}
-
-async function requestRecordAudioPermissionAndroid() {
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-      {
-        title: 'App Audio Permission',
-        message: 'WebRTC のテストのため利用します',
-        buttonNeutral: '後で',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      return true;
-    } else {
-      // リクエストが無効
-      console.log('Record Audio permission denied');
-      return false;
-    }
-  } catch (err) {
-    console.warn(err);
-    return false;
   }
 }
 
@@ -110,8 +74,7 @@ export default class App extends Component<Props, State> {
     // Android の場合カメラの権限をリクエストする
     // XXX(kdxu): 厳密には拒否された場合の処理がいるはず。
     if (Platform.OS === 'android') {
-      requestCameraPermissionAndroid()
-      requestRecordAudioPermissionAndroid()
+      requestPermissionsAndroid()
     }
   }
 
