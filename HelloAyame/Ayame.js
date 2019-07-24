@@ -39,11 +39,10 @@ export class AyameSignalingMessage {
   roomId: string | null;
   clientId: string | null;
   sdp: RTCSessionDescription | null = null;
-  multistream: boolean | null = null;
   video: boolean | Object | null = null;
   audio: boolean | Object | null = null;
-  spotlight: number | null = null;
   candidate: Object | null = null;
+  ice: Object | null = null;
 
   constructor(type: AyameSignalingType) {
     this.type = type;
@@ -60,16 +59,18 @@ export class AyameEventTarget extends EventTarget(AYAME_EVENTS) {}
 export class Ayame extends AyameEventTarget {
   signalingUrl: string;
   roomId: string;
+  clientId: string;
   connectionState: AyameConnectionState = 'new';
   configuration: RTCConfiguration;
 
   _ws: WebSocket;
   _pc: RTCPeerConnection;
 
-  constructor(signalingUrl: string, roomId: string) {
+  constructor(signalingUrl: string, roomId: string, clientId: string) {
     super();
     this.signalingUrl = signalingUrl;
     this.roomId = roomId;
+    this.clientId = clientId;
     this.configuration = new RTCConfiguration();
     this.configuration.iceServers = [
       new RTCIceServer(['stun:stun.l.google.com:19302'])
@@ -126,6 +127,7 @@ export class Ayame extends AyameEventTarget {
     this._pc.onicegatheringstatechange = this._onIceGatheringStateChange.bind(
       this
     );
+    this._pc.onnegotiationneeded = this._onNegotiationNeeded.bind(this);
     this._pc.ontrack = this._onTrack.bind(this);
     if (Platform.OS === 'ios') {
       // Android は現状 onRemoveTrack を検知できないので、iOS のみ onRemoveTrack を bind している。
@@ -269,6 +271,10 @@ export class Ayame extends AyameEventTarget {
 
   _onIceConnectionStateChange(event: Object) {
     logger.log('# Ayame: ICE connection state changed');
+  }
+
+  _onNegotiationNeeded() {
+    logger.log('# Ayame: Negotiation Needed');
   }
 
   _onIceGatheringStateChange() {

@@ -2,5 +2,5 @@
   "name": "HelloAyame",
   "displayName": "HelloAyame",
   "signalingUrl": "wss://ayame.shiguredo.jp/ws",
-  "defaultChannelId": "react-native-webrtc-kit"
+  "defaultRoomId": "react-native-webrtc-kit"
 }

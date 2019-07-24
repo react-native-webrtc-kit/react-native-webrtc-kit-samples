@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View, PermissionsAndroid } from 'react-native';
 import {
@@ -22,6 +21,7 @@ type Props = {};
 
 type State = {
   roomId: string,
+  clientId: string,
   conn: Sora | null,
   sender: RTCRtpSender | null,
   receiver: RTCRtpReceiver | null,
@@ -40,11 +40,22 @@ async function requestPermissionsAndroid() {
   }
 }
 
+
+function randomString(strLength: number) {
+  var result = [];
+  var charSet = '0123456789';
+  while (strLength--) {
+    result.push(charSet.charAt(Math.floor(Math.random() * charSet.length)));
+  }
+  return result.join('');
+}
+
 export default class App extends Component<Props, State> {
   constructor(props: Object) {
     super(props);
     this.state = {
       roomId: defaultRoomId,
+      clientId: randomString(17),
       conn: null,
       sender: null,
       receiver: null,
@@ -87,9 +98,21 @@ export default class App extends Component<Props, State> {
                 height: 60,
                 borderColor: 'gray'
               }}
-              onChangeText={roomId => this.setState({ room: roomId })}
+              onChangeText={roomId => this.setState({ roomId: roomId })}
               value={this.state.roomId}
               placeholder="Room ID"
+            />
+            <TextInput
+              label="クライアントID"
+              mode="outlined"
+              style={{
+                width: '100%',
+                height: 60,
+                borderColor: 'gray'
+              }}
+              onChangeText={clientId => this.setState({ clientId: clientId })}
+              value={this.state.clientId}
+              placeholder="Client ID"
             />
           </View>
           <View>
@@ -98,7 +121,7 @@ export default class App extends Component<Props, State> {
               mode="outlined"
               onPress={() => {
                 this.setState(prev => {
-                  const conn = new Ayame(signalingUrl, prev.roomId);
+                  const conn = new Ayame(signalingUrl, prev.roomId, prev.clientId);
                   conn.onconnect = event => {
                     var sender = prev.conn._pc.senders.find(each => {
                       return each.track.kind === 'video';
