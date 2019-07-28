@@ -65,12 +65,14 @@ export class Ayame extends AyameEventTarget {
 
   _ws: WebSocket;
   _pc: RTCPeerConnection;
+  _isNegotiating: boolean;
 
   constructor(signalingUrl: string, roomId: string, clientId: string) {
     super();
     this.signalingUrl = signalingUrl;
     this.roomId = roomId;
     this.clientId = clientId;
+    this._isNegotiating = false;
     this.configuration = new RTCConfiguration();
     this.configuration.iceServers = [
       new RTCIceServer(['stun:stun.l.google.com:19302'])
@@ -115,7 +117,7 @@ export class Ayame extends AyameEventTarget {
     this.dispatchEvent(new RTCEvent('connectionstatechange'));
   }
 
-  _createPeerConnection() {
+  _createPeerConnection(isOffer: boolean) {
     logger.log('# create new peer connection');
     this._pc = new RTCPeerConnection(this.configuration);
     this._pc.onconnectionstatechange = this._onConnectionStateChange.bind(this);
@@ -127,7 +129,7 @@ export class Ayame extends AyameEventTarget {
     this._pc.onicegatheringstatechange = this._onIceGatheringStateChange.bind(
       this
     );
-    this._pc.onnegotiationneeded = this._onNegotiationNeeded.bind(this);
+    this._pc.onnegotiationneeded = () => this._onNegotiationNeeded.bind(isOffer);
     this._pc.ontrack = this._onTrack.bind(this);
     if (Platform.OS === 'ios') {
       // Android は現状 onRemoveTrack を検知できないので、iOS のみ onRemoveTrack を bind している。
@@ -139,7 +141,7 @@ export class Ayame extends AyameEventTarget {
     logger.group('# Ayame: WebSocket is opened');
 
     if (!this._pc) {
-      this._createPeerConnection();
+      this._createPeerConnection(true);
     }
     this._setConnectionState('connecting');
     const info = await getUserMedia(null);
@@ -150,7 +152,6 @@ export class Ayame extends AyameEventTarget {
         throw new Error(e);
       })
     );
-
     // register メッセージを送信する
     var register = new AyameSignalingMessage('register');
     register.roomId = this.roomId;
@@ -172,8 +173,8 @@ export class Ayame extends AyameEventTarget {
       const signal = JSON.parse(message.data);
       logger.log('# Ayame: signaling type => ', signal.type);
       logger.log(
-        '# Ayame: peer connection state => ',
-        this._pc.connectionState
+        '# Ayame: connection state => ',
+        this.connectionState
       );
       switch (signal.type) {
         case 'accept':
@@ -190,17 +191,18 @@ export class Ayame extends AyameEventTarget {
           );
           break;
         case 'offer':
+          this._createPeerConnection(false);
           logger.log('# Ayame: offer set remote description => ', signal);
           await this._pc.setRemoteDescription(
             new RTCSessionDescription(signal.type, signal.sdp)
           );
-          var description = this._pc.createAnswer(this.configuration);
+          var description = await this._pc.createAnswer(this.configuration);
           logger.log('# Ayame: create answer');
           logger.log('# Ayame: set local description => ', description);
           await this._pc.setLocalDescription(description);
-          const message = new AyameSignalingMessage('answer');
-          message.sdp = description;
-          this._send(message);
+          const msg = new AyameSignalingMessage('answer');
+          msg.sdp = description.sdp;
+          this._send(msg);
           break;
         case 'ping':
           // ping-pong
@@ -260,8 +262,8 @@ export class Ayame extends AyameEventTarget {
     logger.group('# Ayame: ICE candidate changed');
     if (event.candidate != null) {
       var msg = JSON.stringify({
-        type: 'ice',
-        candidate: event.candidate
+        type: 'candidate',
+        ice: event.candidate
       });
       logger.log('# Ayame: send candidate => ', msg);
       this._ws.send(msg);
@@ -273,8 +275,16 @@ export class Ayame extends AyameEventTarget {
     logger.log('# Ayame: ICE connection state changed');
   }
 
-  _onNegotiationNeeded() {
+  async _onNegotiationNeeded(isOffer: boolean) {
     logger.log('# Ayame: Negotiation Needed');
+    if (this._isNegotiating) return;
+    this._isNegotiating = true;
+    if (isOffer) {
+      const offer = await this._pc.createOffer(new RTCMediaStreamConstraints());
+      await this._pc.setLocalDescription(offer);
+      this._sendSdp(this._pc.localDescription);
+      this._isNegotiating = false;
+    }
   }
 
   _onIceGatheringStateChange() {

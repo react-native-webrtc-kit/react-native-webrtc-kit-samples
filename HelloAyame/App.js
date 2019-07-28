@@ -122,18 +122,26 @@ export default class App extends Component<Props, State> {
               onPress={() => {
                 this.setState(prev => {
                   const conn = new Ayame(signalingUrl, prev.roomId, prev.clientId);
-                  conn.onconnect = event => {
-                    var sender = prev.conn._pc.senders.find(each => {
-                      return each.track.kind === 'video';
+                  conn.onconnectionstatechange = function (event) {
+                    this.setState(prev => {
+                      if (event.target.connectionState == 'connected') {
+                        var sender = prev.conn._pc.senders.find(each => {
+                          return each.track.kind == 'video'
+                        });
+                        logger.log("# sender connection connected =>", sender);
+                        return { sender: sender }
+                      }
                     });
-                    return { sender: sender };
-                  };
-                  conn.ontrack = event => {
-                    var receiver = prev.conn._pc.receivers.find(each => {
-                      return each.track.kind === 'video';
+                  }.bind(this);
+                  conn.ontrack = function (event) {
+                    this.setState(prev => {
+                      var receiver = prev.conn._pc.receivers.find(each => {
+                        return each.track.kind === 'video';
+                      });
+                      logger.log("# receiver connection connected =>", receiver);
+                      return { receiver: receiver };
                     });
-                    return { receiver: receiver };
-                  };
+                  }.bind(this);
                   conn.connect();
                   return { conn: conn };
                 });
