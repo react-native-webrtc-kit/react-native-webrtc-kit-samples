@@ -7,6 +7,7 @@ import {
   RTCLogger as logger,
   RTCEvent,
   RTCIceServer,
+  RTCIceCandidate,
   RTCMediaConstraints,
   RTCMediaStream,
   RTCMediaStreamConstraints,
@@ -90,6 +91,7 @@ export class Ayame extends AyameEventTarget {
 
   connect() {
     logger.log('# Ayame: connect');
+    this._pc = null;
     this._ws = new WebSocket(this.signalingUrl);
     this._ws.onopen = this._onWebSocketOpen.bind(this);
     this._ws.onclose = this._onWebSocketClose.bind(this);
@@ -102,9 +104,11 @@ export class Ayame extends AyameEventTarget {
     stopUserMedia();
     if (this._pc) {
       this._pc.close();
+      this._pc = null;
     }
     if (this._ws) {
       this._ws.close();
+      this._ws = null;
     }
     if (this.ondisconnect != null) {
       this.ondisconnect();
@@ -117,41 +121,38 @@ export class Ayame extends AyameEventTarget {
     this.dispatchEvent(new RTCEvent('connectionstatechange'));
   }
 
-  _createPeerConnection(isOffer: boolean) {
-    logger.log('# create new peer connection');
-    this._pc = new RTCPeerConnection(this.configuration);
-    this._pc.onconnectionstatechange = this._onConnectionStateChange.bind(this);
-    this._pc.onsignalingstatechange = this._onSignalingStateChange.bind(this);
-    this._pc.onicecandidate = this._onIceCandidate.bind(this);
-    this._pc.oniceconnectionstatechange = this._onIceConnectionStateChange.bind(
-      this
-    );
-    this._pc.onicegatheringstatechange = this._onIceGatheringStateChange.bind(
-      this
-    );
-    this._pc.onnegotiationneeded = () => this._onNegotiationNeeded.bind(isOffer);
-    this._pc.ontrack = this._onTrack.bind(this);
-    if (Platform.OS === 'ios') {
-      // Android は現状 onRemoveTrack を検知できないので、iOS のみ onRemoveTrack を bind している。
-      this._pc.onremovetrack = this._onRemoveTrack.bind(this);
-    }
-  }
-
-  async _onWebSocketOpen() {
-    logger.group('# Ayame: WebSocket is opened');
-
-    if (!this._pc) {
-      this._createPeerConnection(true);
-    }
-    this._setConnectionState('connecting');
+  async _createPeerConnection() {
+    logger.group('# Ayame: create new peer connection');
+    const pc = new RTCPeerConnection(this.configuration);
     const info = await getUserMedia(null);
     logger.log('# Ayame: getUserMedia: get info =>', info);
     // peer connection に自分の track を追加する
     info.tracks.forEach(track =>
-      this._pc.addTrack(track, [info.streamId]).catch(e => {
+      pc.addTrack(track, [info.streamId]).catch(e => {
         throw new Error(e);
       })
     );
+    pc.onconnectionstatechange = this._onConnectionStateChange.bind(this);
+    pc.onsignalingstatechange = this._onSignalingStateChange.bind(this);
+    pc.onicecandidate = this._onIceCandidate.bind(this);
+    pc.oniceconnectionstatechange = this._onIceConnectionStateChange.bind(
+      this
+    );
+    pc.onicegatheringstatechange = this._onIceGatheringStateChange.bind(
+      this
+    );
+    pc.ontrack = this._onTrack.bind(this);
+    if (Platform.OS === 'ios') {
+      // Android は現状 onRemoveTrack を検知できないので、iOS のみ onRemoveTrack を bind している。
+      pc.onremovetrack = this._onRemoveTrack.bind(this);
+    }
+    logger.groupEnd();
+    return pc;
+  }
+
+  async _onWebSocketOpen() {
+    logger.group('# Ayame: WebSocket is opened');
+    this._setConnectionState('connecting');
     // register メッセージを送信する
     var register = new AyameSignalingMessage('register');
     register.roomId = this.roomId;
@@ -169,16 +170,15 @@ export class Ayame extends AyameEventTarget {
 
   async _onWebSocketMessage(message: Object) {
     try {
-      logger.group('# Ayame: received WebSocket message');
+      logger.group('# Ayame: received WebSocket message', message.data);
       const signal = JSON.parse(message.data);
       logger.log('# Ayame: signaling type => ', signal.type);
-      logger.log(
-        '# Ayame: connection state => ',
-        this.connectionState
-      );
+      logger.log('# Ayame: connection state => ', this.connectionState);
       switch (signal.type) {
         case 'accept':
           logger.log('# Ayame: accepted client');
+          this._pc = await this._createPeerConnection();
+          this._pc.onnegotiationneeded = this._onNegotiationNeeded.bind(this);
           break;
         case 'reject':
           logger.log('# Ayame: rejected', signal);
@@ -186,23 +186,13 @@ export class Ayame extends AyameEventTarget {
           break;
         case 'answer':
           logger.log('# Ayame: answer set remote description => ', signal);
-          await this._pc.setRemoteDescription(
-            new RTCSessionDescription(signal.type, signal.sdp)
-          );
+          await this._setAnswer(signal);
           break;
         case 'offer':
-          this._createPeerConnection(false);
-          logger.log('# Ayame: offer set remote description => ', signal);
-          await this._pc.setRemoteDescription(
-            new RTCSessionDescription(signal.type, signal.sdp)
-          );
-          var description = await this._pc.createAnswer(this.configuration);
-          logger.log('# Ayame: create answer');
-          logger.log('# Ayame: set local description => ', description);
-          await this._pc.setLocalDescription(description);
-          const msg = new AyameSignalingMessage('answer');
-          msg.sdp = description.sdp;
-          this._send(msg);
+          await this._setOffer(signal);
+          break;
+        case 'candidate':
+          await this._setCandidate(signal.ice);
           break;
         case 'ping':
           // ping-pong
@@ -221,10 +211,11 @@ export class Ayame extends AyameEventTarget {
 
   _onConnectionStateChange(event: Object) {
     logger.group('# Ayame: connection state changed => ', event.type);
-
     const oldState = this.connectionState;
-    var newState = this._pc.connectionState;
-    switch (this._pc.connectionState) {
+
+    var newState = 'disconnected';
+    if (this._pc) newState = this._pc.connectionState;
+    switch (newState) {
       case 'new':
         newState = 'new';
         break;
@@ -241,13 +232,11 @@ export class Ayame extends AyameEventTarget {
       default:
         return;
     }
-
     logger.log('# Ayame: set new connection state => ', newState);
     this.connectionState = newState;
     if (oldState !== newState) {
       this.dispatchEvent(new AyameEvent('connectionstatechange'));
     }
-
     logger.groupEnd();
   }
 
@@ -261,12 +250,12 @@ export class Ayame extends AyameEventTarget {
   _onIceCandidate(event: Object) {
     logger.group('# Ayame: ICE candidate changed');
     if (event.candidate != null) {
-      var msg = JSON.stringify({
+      var msg = {
         type: 'candidate',
         ice: event.candidate
-      });
+      };
       logger.log('# Ayame: send candidate => ', msg);
-      this._ws.send(msg);
+      this._send(msg);
     }
     logger.groupEnd();
   }
@@ -275,16 +264,52 @@ export class Ayame extends AyameEventTarget {
     logger.log('# Ayame: ICE connection state changed');
   }
 
-  async _onNegotiationNeeded(isOffer: boolean) {
+  async _onNegotiationNeeded() {
     logger.log('# Ayame: Negotiation Needed');
-    if (this._isNegotiating) return;
-    this._isNegotiating = true;
-    if (isOffer) {
+    if (this._isNegotiating) {
+      return;
+    }
+    if (this._pc) {
+      this._isNegotiating = true;
       const offer = await this._pc.createOffer(new RTCMediaStreamConstraints());
       await this._pc.setLocalDescription(offer);
       this._sendSdp(this._pc.localDescription);
       this._isNegotiating = false;
     }
+  }
+
+  async _setAnswer(sessionDescription: Object) {
+    if (!this._pc) return;
+    await this._pc.setRemoteDescription(
+      new RTCSessionDescription(sessionDescription.type, sessionDescription.sdp)
+    );
+  }
+
+  async _setOffer(sessionDescription: Object) {
+    this._pc = await this._createPeerConnection();
+    this._pc.onnegotiationneeded = () => {};
+    logger.log('# Ayame: offer set remote description => ', sessionDescription);
+    await this._pc.setRemoteDescription(
+      new RTCSessionDescription(sessionDescription.type, sessionDescription.sdp)
+    );
+    const answer = await this._pc.createAnswer(this.configuration);
+    logger.log('# Ayame: create answer');
+    await this._pc.setLocalDescription(answer);
+    this._sendSdp(this._pc.localDescription);
+  }
+
+  async _setCandidate(ice : Object) {
+    if (!this._pc) return;
+    if (ice) {
+      const candidate = new RTCIceCandidate(ice);
+      if (this._pc) {
+        await this._pc.addIceCandidate(candidate);
+      }
+    }
+  }
+
+  _sendSdp(sessionDescription: Object) {
+    this._send(sessionDescription);
   }
 
   _onIceGatheringStateChange() {

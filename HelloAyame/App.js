@@ -1,10 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View, PermissionsAndroid } from 'react-native';
-import {
-  TextInput,
-  Button,
-} from 'react-native-paper';
+import { TextInput, Button } from 'react-native-paper';
 import {
   RTCMediaStreamTrack,
   RTCRtpReceiver,
@@ -39,7 +36,6 @@ async function requestPermissionsAndroid() {
     console.warn(err);
   }
 }
-
 
 function randomString(strLength: number) {
   var result = [];
@@ -118,28 +114,38 @@ export default class App extends Component<Props, State> {
           <View>
             <Button
               raised
+              disabled={this.state.conn !== null}
               mode="outlined"
               onPress={() => {
                 this.setState(prev => {
-                  const conn = new Ayame(signalingUrl, prev.roomId, prev.clientId);
-                  conn.onconnectionstatechange = function (event) {
+                  const conn = new Ayame(
+                    signalingUrl,
+                    prev.roomId,
+                    prev.clientId
+                  );
+                  conn.ondisconnect = function(_event) {
+                    this.setState({
+                        conn: null,
+                        sender: null,
+                        receiver: null
+                    });
+                  }.bind(this)
+                  conn.onconnectionstatechange = function(event) {
                     this.setState(prev => {
                       if (event.target.connectionState == 'connected') {
                         var sender = prev.conn._pc.senders.find(each => {
-                          return each.track.kind == 'video'
+                          return each.track.kind == 'video';
                         });
                         logger.log("# sender connection connected =>", sender);
-                        return { sender: sender }
+                        var receiver = prev.conn._pc.receivers.find(each => {
+                          return each.track.kind === 'video';
+                        });
+                        logger.log(
+                          "# receiver connection connected =>",
+                          receiver
+                        );
+                        return { receiver: receiver, sender: sender };
                       }
-                    });
-                  }.bind(this);
-                  conn.ontrack = function (event) {
-                    this.setState(prev => {
-                      var receiver = prev.conn._pc.receivers.find(each => {
-                        return each.track.kind === 'video';
-                      });
-                      logger.log("# receiver connection connected =>", receiver);
-                      return { receiver: receiver };
                     });
                   }.bind(this);
                   conn.connect();
@@ -152,17 +158,11 @@ export default class App extends Component<Props, State> {
             <Button
               raised
               mode="outlined"
+              disabled={this.state.conn === null}
               onPress={() => {
                 if (this.state.conn) {
                   this.state.conn.disconnect();
                 }
-                this.setState(prev => {
-                  return {
-                    conn: null,
-                    sender: null,
-                    receiver: null
-                  };
-                });
               }}
             >
               接続解除
