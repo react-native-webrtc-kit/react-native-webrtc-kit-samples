@@ -36,12 +36,12 @@
 				<true/>
 			</dict>
 		</dict>
-  </dict>
+	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>React Native for Ayame Test</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>React Native for Ayame Test</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>React Native for Ayame Test</string>
+	<key>NSMicrophoneUsageDescription</key>
 	<string>React Native for Ayame Test</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -52,8 +52,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
