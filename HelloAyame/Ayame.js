@@ -39,6 +39,7 @@ export class AyameSignalingMessage {
   type: AyameSignalingType;
   roomId: string | null;
   clientId: string | null;
+  key: string | null = null; //  シグナリングキー
   sdp: RTCSessionDescription | null = null;
   video: boolean | Object | null = null;
   audio: boolean | Object | null = null;
@@ -61,6 +62,7 @@ export class Ayame extends AyameEventTarget {
   signalingUrl: string;
   roomId: string;
   clientId: string;
+  signalingKey: ?string;
   connectionState: AyameConnectionState = 'new';
   configuration: RTCConfiguration;
 
@@ -68,16 +70,20 @@ export class Ayame extends AyameEventTarget {
   _pc: RTCPeerConnection;
   _isNegotiating: boolean;
 
-  constructor(signalingUrl: string, roomId: string, clientId: string) {
+  constructor(
+    signalingUrl: string,
+    roomId: string,
+    clientId: string,
+    signalingKey: string
+  ) {
     super();
     this.signalingUrl = signalingUrl;
     this.roomId = roomId;
     this.clientId = clientId;
+    this.signalingKey = signalingKey;
     this._isNegotiating = false;
     this.configuration = new RTCConfiguration();
-    this.configuration.iceServers = [
-      new RTCIceServer(['stun:stun.l.google.com:19302'])
-    ];
+    this.configuration.iceServers = [];
   }
 
   _send(message: AyameSignalingMessage) {
@@ -135,12 +141,8 @@ export class Ayame extends AyameEventTarget {
     pc.onconnectionstatechange = this._onConnectionStateChange.bind(this);
     pc.onsignalingstatechange = this._onSignalingStateChange.bind(this);
     pc.onicecandidate = this._onIceCandidate.bind(this);
-    pc.oniceconnectionstatechange = this._onIceConnectionStateChange.bind(
-      this
-    );
-    pc.onicegatheringstatechange = this._onIceGatheringStateChange.bind(
-      this
-    );
+    pc.oniceconnectionstatechange = this._onIceConnectionStateChange.bind(this);
+    pc.onicegatheringstatechange = this._onIceGatheringStateChange.bind(this);
     pc.ontrack = this._onTrack.bind(this);
     if (Platform.OS === 'ios') {
       // Android は現状 onRemoveTrack を検知できないので、iOS のみ onRemoveTrack を bind している。
@@ -157,6 +159,9 @@ export class Ayame extends AyameEventTarget {
     var register = new AyameSignalingMessage('register');
     register.roomId = this.roomId;
     register.clientId = this.clientId;
+    if (this.signalingKey.length > 0) {
+      register.key = this.signalingKey;
+    }
     this._send(register);
     logger.groupEnd();
   }
@@ -177,6 +182,23 @@ export class Ayame extends AyameEventTarget {
       switch (signal.type) {
         case 'accept':
           logger.log('# Ayame: accepted client');
+          if (signal.iceServers && Array.isArray(signal.iceServers)) {
+            // iceServers をセットする
+            let iceServers = [];
+            for (const iceServer of signal.iceServers) {
+              logger.log("# Ayame: ICE server => ", iceServer);
+              for (const url of iceServer.urls) {
+                iceServers.push(
+                  new RTCIceServer(
+                    iceServer.urls,
+                    iceServer.username,
+                    iceServer.credential
+                  )
+                );
+              }
+            }
+            this.configuration.iceServers = iceServers;
+          }
           this._pc = await this._createPeerConnection();
           this._pc.onnegotiationneeded = this._onNegotiationNeeded.bind(this);
           break;
@@ -214,7 +236,9 @@ export class Ayame extends AyameEventTarget {
     const oldState = this.connectionState;
 
     var newState = 'disconnected';
-    if (this._pc) newState = this._pc.connectionState;
+    if (this._pc) {
+      newState = this._pc.connectionState;
+    }
     switch (newState) {
       case 'new':
         newState = 'new';
@@ -279,7 +303,9 @@ export class Ayame extends AyameEventTarget {
   }
 
   async _setAnswer(sessionDescription: Object) {
-    if (!this._pc) return;
+    if (!this._pc) {
+      return;
+    }
     await this._pc.setRemoteDescription(
       new RTCSessionDescription(sessionDescription.type, sessionDescription.sdp)
     );
@@ -298,8 +324,10 @@ export class Ayame extends AyameEventTarget {
     this._sendSdp(this._pc.localDescription);
   }
 
-  async _setCandidate(ice : Object) {
-    if (!this._pc) return;
+  async _setCandidate(ice: Object) {
+    if (!this._pc) {
+      return;
+    }
     if (ice) {
       const candidate = new RTCIceCandidate(ice);
       if (this._pc) {

@@ -1,6 +1,6 @@
 {
   "name": "HelloAyame",
   "displayName": "HelloAyame",
-  "signalingUrl": "wss://ayame.shiguredo.jp/ws",
+  "signalingUrl": "wss://ayame-lite.shiguredo.jp/signaling",
   "defaultRoomId": "react-native-webrtc-kit"
 }

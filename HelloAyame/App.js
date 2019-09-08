@@ -19,6 +19,7 @@ type Props = {};
 type State = {
   roomId: string,
   clientId: string,
+  signalingKey: string,
   conn: Sora | null,
   sender: RTCRtpSender | null,
   receiver: RTCRtpReceiver | null,
@@ -110,6 +111,20 @@ export default class App extends Component<Props, State> {
               value={this.state.clientId}
               placeholder="Client ID"
             />
+            <TextInput
+              label="シグナリングキー"
+              mode="outlined"
+              style={{
+                width: '100%',
+                height: 60,
+                borderColor: 'gray'
+              }}
+              onChangeText={signalingKey =>
+                this.setState({ signalingKey: signalingKey })
+              }
+              value={this.state.signalingKey}
+              placeholder="Signaling Key"
+            />
           </View>
           <View>
             <Button
@@ -121,15 +136,16 @@ export default class App extends Component<Props, State> {
                   const conn = new Ayame(
                     signalingUrl,
                     prev.roomId,
-                    prev.clientId
+                    prev.clientId,
+                    prev.signalingKey
                   );
                   conn.ondisconnect = function(_event) {
                     this.setState({
-                        conn: null,
-                        sender: null,
-                        receiver: null
+                      conn: null,
+                      sender: null,
+                      receiver: null
                     });
-                  }.bind(this)
+                  }.bind(this);
                   conn.onconnectionstatechange = function(event) {
                     this.setState(prev => {
                       if (event.target.connectionState == 'connected') {
