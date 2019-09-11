@@ -159,7 +159,7 @@ export class Ayame extends AyameEventTarget {
     var register = new AyameSignalingMessage('register');
     register.roomId = this.roomId;
     register.clientId = this.clientId;
-    if (this.signalingKey.length > 0) {
+    if (this.signalingKey && this.signalingKey.length > 0) {
       register.key = this.signalingKey;
     }
     this._send(register);

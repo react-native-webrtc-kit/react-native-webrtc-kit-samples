@@ -92,7 +92,7 @@ export default class App extends Component<Props, State> {
               mode="outlined"
               style={{
                 width: '100%',
-                height: 60,
+                height: 50,
                 borderColor: 'gray'
               }}
               onChangeText={roomId => this.setState({ roomId: roomId })}
@@ -104,7 +104,7 @@ export default class App extends Component<Props, State> {
               mode="outlined"
               style={{
                 width: '100%',
-                height: 60,
+                height: 50,
                 borderColor: 'gray'
               }}
               onChangeText={clientId => this.setState({ clientId: clientId })}
@@ -116,7 +116,8 @@ export default class App extends Component<Props, State> {
               mode="outlined"
               style={{
                 width: '100%',
-                height: 60,
+                height: 50,
+                minWidth: '50%',
                 borderColor: 'gray'
               }}
               onChangeText={signalingKey =>
@@ -126,7 +127,7 @@ export default class App extends Component<Props, State> {
               placeholder="Signaling Key"
             />
           </View>
-          <View>
+          <View style={styles.button_container}>
             <Button
               raised
               disabled={this.state.conn !== null}
@@ -217,4 +218,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'lightgray'
   },
+  button_container: {
+    height: 50,
+    flexDirection: 'row'
+  }
 });
