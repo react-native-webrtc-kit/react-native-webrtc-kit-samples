@@ -149,18 +149,30 @@ export default class App extends Component<Props, State> {
                   }.bind(this);
                   conn.onconnectionstatechange = function(event) {
                     this.setState(prev => {
+                      logger.log("#conection state channged", event);
                       if (event.target.connectionState == 'connected') {
-                        var sender = prev.conn._pc.senders.find(each => {
-                          return each.track.kind == 'video';
-                        });
-                        logger.log("# sender connection connected =>", sender);
                         var receiver = prev.conn._pc.receivers.find(each => {
                           return each.track.kind === 'video';
                         });
-                        logger.log(
-                          "# receiver connection connected =>",
-                          receiver
-                        );
+                        if (receiver) {
+                          logger.log(
+                            "# receiver connection connected =>",
+                            receiver
+                          );
+                        } else {
+                          receiver = null;
+                        }
+                      var sender = prev.conn._pc.senders.find(each => {
+                        return each.track.kind === 'video';
+                      });
+                        if (sender) {
+                          logger.log(
+                            "# sender connection connected =>",
+                            sender
+                          );
+                        } else {
+                          sender = null;
+                        }
                         return { receiver: receiver, sender: sender };
                       }
                     });
