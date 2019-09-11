@@ -15,10 +15,10 @@
     "react-native-webrtc-kit": "git+https://github.com/shiguredo/react-native-webrtc-kit#develop"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/runtime": "^7.5.5",
+    "@babel/core": "^7.6.0",
+    "@babel/runtime": "^7.6.0",
     "@react-native-community/eslint-config": "^0.0.5",
-    "eslint": "^6.2.2",
+    "eslint": "^6.3.0",
     "metro-react-native-babel-preset": "^0.56.0",
     "react-test-renderer": "16.9.0"
   }
