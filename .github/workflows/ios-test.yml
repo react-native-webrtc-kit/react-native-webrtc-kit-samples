@@ -1,3 +1,4 @@
+on: push
 jobs:
   test:
     name: iOS Test on node 11.x and macos-latest
