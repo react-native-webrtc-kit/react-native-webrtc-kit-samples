@@ -6,7 +6,6 @@ jobs:
       matrix:
         node-version: [11.x]
     steps:
-      working-directory: ./HelloAyame
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -16,7 +15,9 @@ jobs:
         run: |
           yarn install
           $(npm bin)/react-native link --platforms ios
+        working-directory: ./HelloAyame
       - name: pod install
         run: |
           cd ios/
           pod install
+        working-directory: ./HelloAyame
