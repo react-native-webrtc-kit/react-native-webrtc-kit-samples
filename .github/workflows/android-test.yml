@@ -21,7 +21,7 @@ jobs:
           yarn install
           $(npm bin)/react-native link --platforms android
         working-directory: ./HelloAyame
-      - name: gradlew build
+      - name: gradlew check
         run: |
           cd android/
           ./gradlew check
