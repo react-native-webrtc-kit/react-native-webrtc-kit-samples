@@ -5,18 +5,18 @@ jobs:
     strategy:
       matrix:
         node-version: [11.x]
-   steps:
-    working-directory: ./HelloAyame
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: yarn install and react-native link
-      run: |
-        yarn install
-        $(npm bin)/react-native link --platforms ios
-    - name: pod install
-      run: |
-        cd ios/
-        pod install
+    steps:
+      working-directory: ./HelloAyame
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: yarn install and react-native link
+        run: |
+          yarn install
+          $(npm bin)/react-native link --platforms ios
+      - name: pod install
+        run: |
+          cd ios/
+          pod install
