@@ -1,3 +1,5 @@
+name: Android Test
+
 on: push
 jobs:
   test:
