@@ -1,7 +1,7 @@
 on: push
 jobs:
   test:
-    name: Android Test on node 11.x and ubuntu-latest
+    name: Android Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
