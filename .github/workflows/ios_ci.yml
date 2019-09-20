@@ -1,4 +1,4 @@
-name: HeloSora-iOS-Test
+name: HelloSora-iOS-Test
 
 on: push
 jobs:
