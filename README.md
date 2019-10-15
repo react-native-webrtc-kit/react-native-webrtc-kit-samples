@@ -6,6 +6,8 @@
 
 本リポジトリは [WebRTC Signaling Server Ayame](https://github.com/OpenAyame/ayame) の React Native サンプルです。
 
+[React Native 用 WebRTC ライブラリ](https://github.com/shiguredo/react-native-webrtc-kit) を利用しています。
+
 ## ライセンス
 
 Apache License 2.0
