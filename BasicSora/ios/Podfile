@@ -1,3 +1,6 @@
+source 'https://github.com/shiguredo/sora-ios-sdk-specs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
@@ -33,6 +36,10 @@ target 'BasicSora' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
+  # Add new pods below this line
+  pod 'ReactNativeWebRTCKit', :path => '../node_modules/react-native-webrtc-kit'
+
 
   target 'BasicSoraTests' do
     inherit! :search_paths
