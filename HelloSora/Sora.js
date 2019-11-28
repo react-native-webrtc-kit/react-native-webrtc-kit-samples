@@ -204,11 +204,14 @@ export class Sora extends SoraEventTarget {
   _ws: WebSocket;
   _pc: RTCPeerConnection;
 
-  constructor(url: string, role: SoraRole, channelId: string) {
+  constructor(url: string, role: SoraRole, channelId: string, signalingKey: string) {
     super();
     this.url = url;
     this.role = role;
     this.channelId = channelId;
+    this.metadata = {
+      signaling_key: signalingKey,
+    };
 
     this.configuration = new RTCConfiguration();
     this.configuration.iceServers = [
