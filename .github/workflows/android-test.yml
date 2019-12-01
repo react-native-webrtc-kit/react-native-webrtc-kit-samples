@@ -10,10 +10,10 @@ jobs:
         node-version: [11.x]
     steps:
       - uses: actions/checkout@v1
-      - name: set up JDK 1.8
+      - name: set up Java
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
+          java-version: 8
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
