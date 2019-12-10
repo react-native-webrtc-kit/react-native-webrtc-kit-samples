@@ -458,9 +458,10 @@ export class Sora extends SoraEventTarget {
 
       case 'update':
         logger.log("# Sora: signaling 'update'");
-        if (!this.isMultistream())
+        if (!this.isMultistream()) {
           logger.log("# Sora: not multistream, skipping");
           break;
+        }
         logger.log('# Sora: set configuration => ', this.configuration);
         this._pc.setConfiguration(this.configuration);
         if (signal.sdp !== null) {
