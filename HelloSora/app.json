@@ -1,6 +1,7 @@
 {
   "name": "HelloSora",
   "displayName": "HelloSora",
-  "url": "ws://example.com/signaling",
-  "defaultChannelId": "react-native-webrtc-kit"
+  "url": "wss://sora-labo.shiguredo.jp/signaling",
+  "defaultChannelId": "*** SET YOUR GITHUB USER NAME ***@sora-labo",
+  "signalingKey": "*** SET YOUR SIGNALING KEY ***"
 }
