@@ -203,7 +203,7 @@ export class Ayame extends AyameEventTarget {
             this.configuration.iceServers = iceServers;
           }
           if(!this._pc) this._pc = await this._createPeerConnection();
-          await this._sendOffer();
+          if (signal.isExistClient) await this._sendOffer();
           break;
         case 'reject':
           logger.log('# Ayame: rejected', signal);
