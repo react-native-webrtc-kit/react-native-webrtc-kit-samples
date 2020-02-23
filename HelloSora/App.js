@@ -18,7 +18,8 @@ import {
   RTCRtpReceiver,
   RTCVideoView,
   RTCObjectFit,
-  RTCLogger as logger
+  RTCLogger as logger,
+  RTCMediaStreamTrack
 } from 'react-native-webrtc-kit';
 import { Sora } from './Sora';
 import { url, defaultChannelId, signalingKey } from './app.json';
@@ -33,7 +34,7 @@ type State = {
   pubConn: Sora | null,
   subConn: Sora | null,
   sender: RTCRtpSender | null;
-  receiver: RTCRtpReceiver | null;
+  receiverTrack: RTCMediaStreamTrack | null;
   objectFit: RTCObjectFit
 };
 
@@ -62,7 +63,7 @@ export default class App extends Component<Props, State> {
       pubConn: null,
       subConn: null,
       sender: null,
-      receiver: null,
+      receiverTrack: null,
       objectFit: 'cover'
     };
   }
@@ -92,7 +93,7 @@ export default class App extends Component<Props, State> {
           <View style={styles.div_header}>
             <RTCVideoView
               style={styles.videoview}
-              track={this.state.receiver ? this.state.receiver.track : null}
+              track={this.state.receiverTrack ? this.state.receiverTrack : null}
               objectFit={this.state.objectFit}
             />
           </View>
@@ -162,16 +163,17 @@ export default class App extends Component<Props, State> {
                 this.setState(prev => {
                   const role = this.state.multistream ? 'groupsub' : 'subscriber';
                   const subConn = new Sora(url, role, prev.channelId, signalingKey);
-                  subConn.onconnectionstatechange = function (event) {
+                  subConn.ontrack = function (event) {
                     this.setState(prev => {
-                      logger.log("# subscriber connection state change => ",
-                        event.target.connectionState);
-                      if (event.target.connectionState == 'connected') {
-                        var recv = prev.subConn._pc.receivers.find(each => {
-                          return each.track.kind == 'video'
-                        });
-                        logger.log("# subscriber connection connected =>", recv);
-                        return { receiver: recv }
+                      if (event.receiver && event.track && event.track.kind === 'video') {
+                        if (!prev.receiverTrack) {
+                          logger.log('# receiver track added =>', event.track)
+                          return { receiverTrack: event.track };
+                        }
+                        else if (prev.receiverTrack.id === event.track.id) {
+                          logger.log('# receiver track removed')
+                          return { receiverTrack: null };
+                        }
                       }
                     });
                   }.bind(this);
