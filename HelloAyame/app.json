@@ -2,5 +2,5 @@
   "name": "HelloAyame",
   "displayName": "HelloAyame",
   "signalingUrl": "wss://ayame-lite.shiguredo.jp/signaling",
-  "defaultRoomId": "username-of-github@test-room"
+  "defaultRoomId": "username-of-github@ayame-lite"
 }

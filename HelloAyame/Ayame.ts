@@ -1,7 +1,6 @@
-//
-
 import {NativeModules, Platform} from 'react-native';
 import EventTarget from 'event-target-shim';
+
 import {
   RTCConfiguration,
   RTCLogger as logger,
@@ -15,46 +14,80 @@ import {
   RTCSessionDescription,
   getUserMedia,
   stopUserMedia,
+  // @ts-ignore
 } from 'react-native-webrtc-kit';
 
 export class AyameEvent extends RTCEvent {}
 
-export class AyameSignalingMessage {
-  type;
-  roomId;
-  clientId;
-  key = null; //  シグナリングキー
-  sdp = null;
-  video = null;
-  audio = null;
-  candidate = null;
-  ice = null;
+enum AyameConnectionState {
+  New = 'new',
+  Connecting = 'connecting',
+  Connected = 'connected',
+  Disconnected = 'disconnected',
+}
 
-  constructor(type) {
+enum AyameSignalingType {
+  Register = 'register',
+  Accept = 'accept',
+  Reject = 'reject',
+  Candidate = 'candidate',
+  Offer = 'offer',
+  Answer = 'answer',
+  Ping = 'ping',
+  Pong = 'pong',
+}
+
+export class AyameSignalingMessage {
+  type: string = '';
+  roomId?: string = '';
+  clientId?: string = '';
+  key?: string = ''; //  シグナリングキー
+  sdp?: any = null;
+  video?: boolean | Object | null = null;
+  audio?: boolean | Object | null = null;
+  candidate?: Object | null = null;
+  ice?: Object | null = null;
+  data?: any;
+
+  constructor(type: AyameSignalingType) {
     this.type = type;
   }
 }
 
-export const AYAME_EVENTS = ['connectionstatechange', 'track', 'disconnect'];
+type AyameEventType = 'connectionstatechange' | 'track' | 'disconnect';
 
-export class AyameEventTarget extends EventTarget(AYAME_EVENTS) {}
+export const AyameEvents: Array<AyameEventType> = [
+  'connectionstatechange',
+  'track',
+  'disconnect',
+];
+
+export class AyameEventTarget extends EventTarget(AyameEvents) {}
 
 /**
  * WebRTC Signaling Server Ayame サーバーとの接続を行うクラス
  */
 export class Ayame extends AyameEventTarget {
-  signalingUrl;
-  roomId;
-  clientId;
-  signalingKey;
-  connectionState = 'new';
-  configuration;
+  signalingUrl: string;
+  roomId: string;
+  clientId: string;
+  signalingKey: string;
+  connectionState: AyameConnectionState = AyameConnectionState.New;
+  configuration: any;
 
-  _ws;
-  _pc;
-  _isOffer;
+  _ws: any;
+  _pc: any;
+  _isOffer: boolean;
 
-  constructor(signalingUrl, roomId, clientId, signalingKey) {
+  ondisconnect: any;
+  onconnectionstatechange: any;
+
+  constructor(
+    signalingUrl: string,
+    roomId: string,
+    clientId: string,
+    signalingKey: string,
+  ) {
     super();
     this.signalingUrl = signalingUrl;
     this.roomId = roomId;
@@ -65,7 +98,7 @@ export class Ayame extends AyameEventTarget {
     this.configuration.sdpSemantics = 'unified';
   }
 
-  _send(message) {
+  _send(message: AyameSignalingMessage) {
     if (this._ws !== null) {
       logger.group('# Ayame: send signaling message =>', message.type);
       const json = JSON.stringify(message);
@@ -102,7 +135,7 @@ export class Ayame extends AyameEventTarget {
     }
   }
 
-  _setConnectionState(state) {
+  _setConnectionState(state: AyameConnectionState) {
     logger.log('# Ayame: set connection state => ', state);
     this.connectionState = state;
     this.dispatchEvent(new RTCEvent('connectionstatechange'));
@@ -114,8 +147,8 @@ export class Ayame extends AyameEventTarget {
     const info = await getUserMedia(null);
     logger.log('# Ayame: getUserMedia: get info =>', info);
     // peer connection に自分の track を追加する
-    info.tracks.forEach(track =>
-      pc.addTrack(track, [info.streamId]).catch(e => {
+    info.tracks.forEach((track: object) =>
+      pc.addTrack(track, [info.streamId]).catch((e: string) => {
         throw new Error(e);
       }),
     );
@@ -136,9 +169,9 @@ export class Ayame extends AyameEventTarget {
 
   async _onWebSocketOpen() {
     logger.group('# Ayame: WebSocket is opened');
-    this._setConnectionState('connecting');
+    this._setConnectionState(AyameConnectionState.Connecting);
     // register メッセージを送信する
-    var register = new AyameSignalingMessage('register');
+    var register = new AyameSignalingMessage(AyameSignalingType.Register);
     register.roomId = this.roomId;
     register.clientId = this.clientId;
     if (this.signalingKey && this.signalingKey.length > 0) {
@@ -155,7 +188,7 @@ export class Ayame extends AyameEventTarget {
     }
   }
 
-  async _onWebSocketMessage(message) {
+  async _onWebSocketMessage(message: any) {
     try {
       logger.group('# Ayame: received WebSocket message', message.data);
       const signal = JSON.parse(message.data);
@@ -200,7 +233,7 @@ export class Ayame extends AyameEventTarget {
           break;
         case 'ping':
           // ping-pong
-          this._ws.send(JSON.stringify({type: 'pong'}));
+          this._ws.send(JSON.stringify({type: AyameSignalingType.Pong}));
           break;
         default:
           logger.log('# Ayame: signaling unknown');
@@ -213,28 +246,29 @@ export class Ayame extends AyameEventTarget {
     }
   }
 
-  _onConnectionStateChange(event) {
+  _onConnectionStateChange(event: any) {
     logger.group('# Ayame: connection state changed => ', event.type);
-    const oldState = this.connectionState;
+    const oldState: AyameConnectionState = this.connectionState;
 
-    var newState = 'disconnected';
+    var newState: AyameConnectionState | 'failed' | 'closed' =
+      AyameConnectionState.Disconnected;
     if (this._pc) {
       newState = this._pc.connectionState;
     }
     switch (newState) {
       case 'new':
-        newState = 'new';
+        newState = AyameConnectionState.New;
         break;
       case 'connecting':
-        newState = 'connecting';
+        newState = AyameConnectionState.Connecting;
         break;
       case 'connected':
-        newState = 'connected';
+        newState = AyameConnectionState.Connected;
         this._isOffer = false;
         break;
       case 'failed':
       case 'closed':
-        newState = 'disconnected';
+        newState = AyameConnectionState.Disconnected;
         break;
       default:
         return;
@@ -242,19 +276,20 @@ export class Ayame extends AyameEventTarget {
     logger.log('# Ayame: set new connection state => ', newState);
     this.connectionState = newState;
     if (oldState !== newState) {
+      // @ts-ignore
       this.dispatchEvent(new AyameEvent('connectionstatechange'));
     }
     logger.groupEnd();
   }
 
-  _onSignalingStateChange(event) {
+  _onSignalingStateChange(event: any) {
     logger.log(
       '# Ayame: peer connection signaling state changed => ',
       event.type,
     );
   }
 
-  _onIceCandidate(event) {
+  _onIceCandidate(event: any) {
     logger.group('# Ayame: ICE candidate changed', event.candidate);
     if (event.candidate != null) {
       var msg = {
@@ -271,7 +306,7 @@ export class Ayame extends AyameEventTarget {
     logger.groupEnd();
   }
 
-  _onIceConnectionStateChange(event) {
+  _onIceConnectionStateChange(event: object) {
     logger.log('# Ayame: ICE connection state changed');
   }
 
@@ -285,7 +320,7 @@ export class Ayame extends AyameEventTarget {
     this._isOffer = true;
   }
 
-  async _setAnswer(sessionDescription) {
+  async _setAnswer(sessionDescription: any) {
     if (!this._pc) {
       return;
     }
@@ -297,7 +332,7 @@ export class Ayame extends AyameEventTarget {
     );
   }
 
-  async _setOffer(sessionDescription) {
+  async _setOffer(sessionDescription: any) {
     this._pc = await this._createPeerConnection();
     logger.log('# Ayame: offer set remote description => ', sessionDescription);
     await this._pc.setRemoteDescription(
@@ -312,7 +347,7 @@ export class Ayame extends AyameEventTarget {
     this._sendSdp(this._pc.localDescription);
   }
 
-  async _setCandidate(ice) {
+  async _setCandidate(ice: any) {
     if (!this._pc) {
       return;
     }
@@ -326,7 +361,7 @@ export class Ayame extends AyameEventTarget {
     }
   }
 
-  _sendSdp(sessionDescription) {
+  _sendSdp(sessionDescription: AyameSignalingMessage) {
     this._send(sessionDescription);
   }
 
@@ -334,16 +369,17 @@ export class Ayame extends AyameEventTarget {
     logger.log('# Ayame: ICE gathering state changed');
   }
 
-  _onTrack(event) {
+  _onTrack(event: any) {
     logger.log('# Ayame: track added =>', event.track);
+    // @ts-ignore
     this.dispatchEvent(new AyameEvent('track', event));
   }
 
-  _onRemoveTrack(event) {
+  _onRemoveTrack(event: object) {
     logger.log('# Ayame: track removed =>', event);
   }
 
-  _onAnyError(error) {
+  _onAnyError(error: object) {
     logger.log('# Ayame: any error => ', error);
   }
 }

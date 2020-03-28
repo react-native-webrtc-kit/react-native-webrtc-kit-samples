@@ -7,31 +7,9 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {
-  // Button,
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  // TextInput,
-  StatusBar,
-  PermissionsAndroid,
-  Platform,
-} from 'react-native';
+import {StyleSheet, View, PermissionsAndroid, Platform} from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-import {
-  Button,
-  TextInput,
-} from 'react-native-paper';
+import {Button, TextInput} from 'react-native-paper';
 
 import {
   RTCMediaStreamTrack,
@@ -39,9 +17,10 @@ import {
   RTCVideoView,
   RTCObjectFit,
   RTCLogger as logger,
+  // @ts-ignore
 } from 'react-native-webrtc-kit';
 
-import { Ayame } from './Ayame';
+import {Ayame} from './Ayame';
 import {signalingUrl, defaultRoomId} from './app.json';
 
 logger.setDebugMode(true);
@@ -58,7 +37,7 @@ async function requestPermissionsAndroid() {
   }
 }
 
-function randomString(strLength) {
+function randomString(strLength: number): string {
   var result = [];
   var charSet = '0123456789';
   while (strLength--) {
@@ -67,14 +46,14 @@ function randomString(strLength) {
   return result.join('');
 }
 
-const App: () => React$Node = () => {
-  const [roomId, setRoomId] = useState(defaultRoomId);
-  const [clientId, setClientId] = useState(randomString(17));
-  const [signalingKey, setSignalingKey] = useState('');
-  const [conn, setConn] = useState(null);
-  const [sender, setSender] = useState(null);
-  const [receiver, setReceiver] = useState(null);
-  const [objectFit, setObjectFit] = useState(RTCObjectFit);
+const App: () => React.ReactNode = () => {
+  const [roomId, setRoomId] = useState<string>(defaultRoomId);
+  const [clientId, setClientId] = useState<string>(randomString(17));
+  const [signalingKey, setSignalingKey] = useState<string>('');
+  const [conn, setConn] = useState<Ayame | null>(null);
+  const [sender, setSender] = useState<any>(null);
+  const [receiver, setReceiver] = useState<any>(null);
+  const [objectFit, setObjectFit] = useState<object>(RTCObjectFit);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -140,7 +119,7 @@ const App: () => React$Node = () => {
         </View>
         <View style={styles.button_container}>
           <Button
-            raiseddisabled={conn !== null}
+            disabled={conn !== null}
             mode="outlined"
             onPress={() => {
               const conn = new Ayame(
@@ -149,51 +128,48 @@ const App: () => React$Node = () => {
                 clientId,
                 signalingKey,
               );
-              conn.ondisconnect = function(_event) {
+              conn.ondisconnect = function(_event: object) {
                 setConn(null);
                 setSender(null);
                 setReceiver(null);
-              }.bind(this);
+              };
 
-              conn.onconnectionstatechange = function(event) {
+              conn.onconnectionstatechange = function(event: any) {
                 logger.log('#conection state channged', event);
                 if (event.target.connectionState == 'connected') {
-                  const receiver = conn._pc.receivers.find(each => {
+                  const receiver = conn._pc.receivers.find((each: any) => {
                     return each.track.kind === 'video';
                   });
                   if (receiver) {
                     logger.log('# receiver connection connected =>', receiver);
                   } else {
-                    receiver = null;
+                    setReceiver(null);
                   }
-                  var sender = conn._pc.senders.find(each => {
+                  var sender = conn._pc.senders.find((each: any) => {
                     return each.track.kind === 'video';
                   });
                   if (sender) {
                     logger.log('# sender connection connected =>', sender);
                   } else {
-                    sender = null;
+                    setSender(null);
                   }
                   setReceiver(receiver);
                   setSender(sender);
                 }
-              }.bind(this);
+              };
               conn.connect();
               setConn(conn);
-            }}
-          >
+            }}>
             接続
           </Button>
           <Button
-            raised
             mode="outlined"
             disabled={conn === null}
             onPress={() => {
               if (conn) {
                 conn.disconnect();
               }
-            }}
-          >
+            }}>
             接続解除
           </Button>
         </View>
