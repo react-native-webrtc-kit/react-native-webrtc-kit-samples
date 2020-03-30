@@ -79,7 +79,7 @@ const App: () => React.ReactNode = () => {
               height: 50,
               borderColor: 'gray',
             }}
-            onChangeText={roomId => setRoomId(roomId)}
+            onChangeText={setRoomId}
             value={roomId}
             placeholder="Room ID"
           />
@@ -91,7 +91,7 @@ const App: () => React.ReactNode = () => {
               height: 50,
               borderColor: 'gray',
             }}
-            onChangeText={clientId => setClientId(clientId)}
+            onChangeText={setClientId}
             value={clientId}
             placeholder="Client ID"
           />
@@ -104,7 +104,7 @@ const App: () => React.ReactNode = () => {
               minWidth: '50%',
               borderColor: 'gray',
             }}
-            onChangeText={signalingKey => setSignalingKey(signalingKey)}
+            onChangeText={setSignalingKey}
             value={signalingKey}
             placeholder="Signaling Key"
           />
@@ -156,7 +156,7 @@ const App: () => React.ReactNode = () => {
           </Button>
           <Button
             mode="outlined"
-            disabled={conn === null}
+            disabled={!conn}
             onPress={() => {
               if (conn) {
                 conn.disconnect();
