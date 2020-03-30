@@ -20,21 +20,23 @@ import {
 export class AyameEvent extends RTCEvent {}
 
 enum AyameConnectionState {
-  New = 'new',
-  Connecting = 'connecting',
-  Connected = 'connected',
-  Disconnected = 'disconnected',
+  NEW = 'new',
+  CONNECTING = 'connecting',
+  CONNECTED = 'connected',
+  DISCONNECTED = 'disconnected',
+  FAILED = 'failed',
+  CLOSED = 'closed',
 }
 
 enum AyameSignalingType {
-  Register = 'register',
-  Accept = 'accept',
-  Reject = 'reject',
-  Candidate = 'candidate',
-  Offer = 'offer',
-  Answer = 'answer',
-  Ping = 'ping',
-  Pong = 'pong',
+  REGISTER = 'register',
+  ACCEPT = 'accept',
+  REJECT = 'reject',
+  CANDIDATE = 'candidate',
+  OFFER = 'offer',
+  ANSWER = 'answer',
+  PING = 'ping',
+  PONG = 'pong',
 }
 
 export class AyameSignalingMessage {
@@ -72,7 +74,7 @@ export class Ayame extends AyameEventTarget {
   roomId: string;
   clientId: string;
   signalingKey: string;
-  connectionState: AyameConnectionState = AyameConnectionState.New;
+  connectionState: AyameConnectionState = AyameConnectionState.NEW;
   configuration: any;
 
   _ws: any;
@@ -169,9 +171,9 @@ export class Ayame extends AyameEventTarget {
 
   async _onWebSocketOpen() {
     logger.group('# Ayame: WebSocket is opened');
-    this._setConnectionState(AyameConnectionState.Connecting);
+    this._setConnectionState(AyameConnectionState.CONNECTING);
     // register メッセージを送信する
-    var register = new AyameSignalingMessage(AyameSignalingType.Register);
+    var register = new AyameSignalingMessage(AyameSignalingType.REGISTER);
     register.roomId = this.roomId;
     register.clientId = this.clientId;
     if (this.signalingKey && this.signalingKey.length > 0) {
@@ -217,23 +219,23 @@ export class Ayame extends AyameEventTarget {
           if (!this._pc) this._pc = await this._createPeerConnection();
           if (signal.isExistClient) await this._sendOffer();
           break;
-        case 'reject':
+        case AyameSignalingType.REJECT:
           logger.log('# Ayame: rejected', signal);
           this.disconnect();
           break;
-        case 'answer':
+        case AyameSignalingType.ANSWER:
           logger.log('# Ayame: answer set remote description => ', signal);
           await this._setAnswer(signal);
           break;
-        case 'offer':
+        case AyameSignalingType.OFFER:
           await this._setOffer(signal);
           break;
-        case 'candidate':
+        case AyameSignalingType.CANDIDATE:
           await this._setCandidate(signal);
           break;
-        case 'ping':
+        case AyameSignalingType.PING:
           // ping-pong
-          this._ws.send(JSON.stringify({type: AyameSignalingType.Pong}));
+          this._ws.send(JSON.stringify({type: AyameSignalingType.PONG}));
           break;
         default:
           logger.log('# Ayame: signaling unknown');
@@ -251,24 +253,24 @@ export class Ayame extends AyameEventTarget {
     const oldState: AyameConnectionState = this.connectionState;
 
     var newState: AyameConnectionState | 'failed' | 'closed' =
-      AyameConnectionState.Disconnected;
+      AyameConnectionState.DISCONNECTED;
     if (this._pc) {
       newState = this._pc.connectionState;
     }
     switch (newState) {
-      case 'new':
-        newState = AyameConnectionState.New;
+      case AyameConnectionState.NEW:
+        newState = AyameConnectionState.NEW;
         break;
-      case 'connecting':
-        newState = AyameConnectionState.Connecting;
+      case AyameConnectionState.CONNECTING:
+        newState = AyameConnectionState.CONNECTING;
         break;
-      case 'connected':
-        newState = AyameConnectionState.Connected;
+      case AyameConnectionState.CONNECTED:
+        newState = AyameConnectionState.CONNECTED;
         this._isOffer = false;
         break;
-      case 'failed':
-      case 'closed':
-        newState = AyameConnectionState.Disconnected;
+      case AyameConnectionState.FAILED:
+      case AyameConnectionState.CLOSED:
+        newState = AyameConnectionState.DISCONNECTED;
         break;
       default:
         return;
