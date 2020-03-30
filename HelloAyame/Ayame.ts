@@ -7,13 +7,13 @@ import {
   RTCEvent,
   RTCIceServer,
   RTCIceCandidate,
-  RTCMediaConstraints,
-  RTCMediaStream,
   RTCMediaStreamConstraints,
   RTCPeerConnection,
   RTCSessionDescription,
   getUserMedia,
   stopUserMedia,
+  // react-native-webrtc-kit には TypeScript の型定義が用意されていないため、@ts-ignore で握りつぶしています。
+  // TODO(enm10k): react-native-webrtc-kit が TypeScript 化されたら、@ts-ignore を外す
   // @ts-ignore
 } from 'react-native-webrtc-kit';
 
@@ -44,12 +44,12 @@ export class AyameSignalingMessage {
   roomId?: string = '';
   clientId?: string = '';
   key?: string = ''; //  シグナリングキー
-  sdp?: any = null;
+  sdp?: Object | null = null;
   video?: boolean | Object | null = null;
   audio?: boolean | Object | null = null;
   candidate?: Object | null = null;
   ice?: Object | null = null;
-  data?: any;
+  data?: string | null = null;
 
   constructor(type: AyameSignalingType) {
     this.type = type;
@@ -75,14 +75,20 @@ export class Ayame extends AyameEventTarget {
   clientId: string;
   signalingKey: string;
   connectionState: AyameConnectionState = AyameConnectionState.NEW;
+  // react-native-webrtc-kit で TypeScript の型を定義するまで any を使用します
+  // TODO(enm10k): react-native-webrtc-kit で RTCConfiguration の型を定義する
   configuration: any;
 
-  _ws: any;
+  _ws?: WebSocket | null;
+  // react-native-webrtc-kit で TypeScript の型を定義するまで any を使用します
+  // TODO(enm10k): react-native-webrtc-kit で RTCPeerConnection の型を定義する
   _pc: any;
   _isOffer: boolean;
 
-  ondisconnect: any;
-  onconnectionstatechange: any;
+  ondisconnect?: () => void;
+  onconnectionstatechange?: (event: {
+    target: {connectionState: string};
+  }) => void;
 
   constructor(
     signalingUrl: string,
@@ -101,12 +107,13 @@ export class Ayame extends AyameEventTarget {
   }
 
   _send(message: AyameSignalingMessage) {
-    if (this._ws !== null) {
-      logger.group('# Ayame: send signaling message =>', message.type);
-      const json = JSON.stringify(message);
-      this._ws.send(json);
-      logger.groupEnd();
+    if (!this._ws) {
+      logger.log('Ayame: failed to send signaling message');
+      return;
     }
+    logger.group('# Ayame: send signaling message =>', message.type);
+    this._ws.send(JSON.stringify(message));
+    logger.groupEnd();
   }
 
   connect() {
@@ -190,7 +197,7 @@ export class Ayame extends AyameEventTarget {
     }
   }
 
-  async _onWebSocketMessage(message: any) {
+  async _onWebSocketMessage(message: WebSocketMessageEvent) {
     try {
       logger.group('# Ayame: received WebSocket message', message.data);
       const signal = JSON.parse(message.data);
@@ -235,7 +242,7 @@ export class Ayame extends AyameEventTarget {
           break;
         case AyameSignalingType.PING:
           // ping-pong
-          this._ws.send(JSON.stringify({type: AyameSignalingType.PONG}));
+          this._send({type: AyameSignalingType.PONG});
           break;
         default:
           logger.log('# Ayame: signaling unknown');
@@ -248,12 +255,11 @@ export class Ayame extends AyameEventTarget {
     }
   }
 
-  _onConnectionStateChange(event: any) {
+  _onConnectionStateChange(event: {type: string}) {
     logger.group('# Ayame: connection state changed => ', event.type);
     const oldState: AyameConnectionState = this.connectionState;
 
-    var newState: AyameConnectionState | 'failed' | 'closed' =
-      AyameConnectionState.DISCONNECTED;
+    var newState: AyameConnectionState = AyameConnectionState.DISCONNECTED;
     if (this._pc) {
       newState = this._pc.connectionState;
     }
@@ -284,14 +290,16 @@ export class Ayame extends AyameEventTarget {
     logger.groupEnd();
   }
 
-  _onSignalingStateChange(event: any) {
+  _onSignalingStateChange(event: {type: string}) {
     logger.log(
       '# Ayame: peer connection signaling state changed => ',
       event.type,
     );
   }
 
-  _onIceCandidate(event: any) {
+  _onIceCandidate(event: {
+    candidate: {candidate: object; sdpMLineIndex: object; sdpMid: object};
+  }) {
     logger.group('# Ayame: ICE candidate changed', event.candidate);
     if (event.candidate != null) {
       var msg = {
@@ -322,7 +330,7 @@ export class Ayame extends AyameEventTarget {
     this._isOffer = true;
   }
 
-  async _setAnswer(sessionDescription: any) {
+  async _setAnswer(sessionDescription: {type: string; sdp: Object}) {
     if (!this._pc) {
       return;
     }
@@ -334,7 +342,7 @@ export class Ayame extends AyameEventTarget {
     );
   }
 
-  async _setOffer(sessionDescription: any) {
+  async _setOffer(sessionDescription: AyameSignalingMessage) {
     this._pc = await this._createPeerConnection();
     logger.log('# Ayame: offer set remote description => ', sessionDescription);
     await this._pc.setRemoteDescription(
@@ -349,7 +357,7 @@ export class Ayame extends AyameEventTarget {
     this._sendSdp(this._pc.localDescription);
   }
 
-  async _setCandidate(ice: any) {
+  async _setCandidate(ice: {candidate: Object}) {
     if (!this._pc) {
       return;
     }
@@ -371,7 +379,7 @@ export class Ayame extends AyameEventTarget {
     logger.log('# Ayame: ICE gathering state changed');
   }
 
-  _onTrack(event: any) {
+  _onTrack(event: {track: object}) {
     logger.log('# Ayame: track added =>', event.track);
     // @ts-ignore
     this.dispatchEvent(new AyameEvent('track', event));

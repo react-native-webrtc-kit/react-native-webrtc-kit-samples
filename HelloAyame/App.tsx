@@ -6,9 +6,12 @@ import {Button, TextInput} from 'react-native-paper';
 import {
   RTCMediaStreamTrack,
   RTCRtpReceiver,
+  RTCRtpSender,
   RTCVideoView,
   RTCObjectFit,
   RTCLogger as logger,
+  // react-native-webrtc-kit には TypeScript の型定義が用意されていないため、@ts-ignore で握りつぶしています。
+  // TODO(enm10k): react-native-webrtc-kit が TypeScript 化されたら、@ts-ignore を外す
   // @ts-ignore
 } from 'react-native-webrtc-kit';
 
@@ -38,13 +41,25 @@ function randomString(strLength: number): string {
   return result.join('');
 }
 
+interface RTCRtpReceiver {
+  track: {
+    kind: string;
+  };
+}
+
+interface RTCRtpSender {
+  track: {
+    kind: string;
+  };
+}
+
 const App: () => React.ReactNode = () => {
   const [roomId, setRoomId] = useState<string>(defaultRoomId);
   const [clientId, setClientId] = useState<string>(randomString(17));
   const [signalingKey, setSignalingKey] = useState<string>('');
   const [conn, setConn] = useState<Ayame | null>(null);
-  const [sender, setSender] = useState<any>(null);
-  const [receiver, setReceiver] = useState<any>(null);
+  const [sender, setSender] = useState<RTCRtpSender | null>(null);
+  const [receiver, setReceiver] = useState<RTCRtpReceiver | null>(null);
   const [objectFit, setObjectFit] = useState<object>(RTCObjectFit);
 
   useEffect(() => {
@@ -120,24 +135,28 @@ const App: () => React.ReactNode = () => {
                 clientId,
                 signalingKey,
               );
-              conn.ondisconnect = function(_event: object) {
+              conn.ondisconnect = function() {
                 setConn(null);
                 setSender(null);
                 setReceiver(null);
               };
 
-              conn.onconnectionstatechange = function(event: any) {
+              conn.onconnectionstatechange = function(event: {
+                target: {connectionState: string};
+              }) {
                 logger.log('#conection state channged', event);
-                if (event.target.connectionState == 'connected') {
-                  const receiver = conn._pc.receivers.find((each: any) => {
-                    return each.track.kind === 'video';
-                  });
+                if (event.target.connectionState === 'connected') {
+                  const receiver = conn._pc.receivers.find(
+                    (each: RTCRtpReceiver) => {
+                      return each.track.kind === 'video';
+                    },
+                  );
                   if (receiver) {
                     logger.log('# receiver connection connected =>', receiver);
                   } else {
                     setReceiver(null);
                   }
-                  var sender = conn._pc.senders.find((each: any) => {
+                  var sender = conn._pc.senders.find((each: RTCRtpSender) => {
                     return each.track.kind === 'video';
                   });
                   if (sender) {
