@@ -284,6 +284,8 @@ export class Ayame extends AyameEventTarget {
     logger.log('# Ayame: set new connection state => ', newState);
     this.connectionState = newState;
     if (oldState !== newState) {
+      // dispatchEvent の型定義を満たすことができなかったため @ts-ignore しています
+      // TODO(enm10k): react-native-webrtc-kit で RTCEvent の型が定義されたタイミングで @ts-ignore を外せるようにする
       // @ts-ignore
       this.dispatchEvent(new AyameEvent('connectionstatechange'));
     }
@@ -381,6 +383,8 @@ export class Ayame extends AyameEventTarget {
 
   _onTrack(event: {track: object}) {
     logger.log('# Ayame: track added =>', event.track);
+    // dispatchEvent の型定義を満たすことができなかったため @ts-ignore しています
+    // TODO(enm10k): react-native-webrtc-kit で RTCEvent の型が定義されたタイミングで @ts-ignore を外せるようにする
     // @ts-ignore
     this.dispatchEvent(new AyameEvent('track', event));
   }
