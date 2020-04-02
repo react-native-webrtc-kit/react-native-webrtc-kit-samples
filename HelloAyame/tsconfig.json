@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "jsx": "react",
+    "lib": ["es6"],
+    "moduleResolution": "node",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    // react-native-paper で以下のエラーが発生したため skipLibCheck を true にしています
+    //
+    // $ yarn run tsc
+    // yarn run v1.22.4
+    // $ .../shiguredo/ayame-react-native-sample/HelloAyame/node_modules/.bin/tsc
+    // node_modules/react-native-paper/lib/typescript/src/components/HelperText.d.ts:85:59 - error TS2344: Type 'string | number | symbol' does not satisfy the constraint '"visible" | "style" | "padding" | "children" | "onLayout" | "testID" | "nativeID" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityStates" | ... 27 more ... | "theme"'.
+    //   Type 'string' is not assignable to type '"visible" | "style" | "padding" | "children" | "onLayout" | "testID" | "nativeID" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityStates" | ... 27 more ... | "theme"'.
+    //
+    // 85 declare const _default: (React.ComponentClass<Pick<Props, string | number | symbol> & {
+    //                                                             ~~~~~~~~~~~~~~~~~~~~~~~~
+    //
+    // node_modules/react-native-paper/lib/typescript/src/components/HelperText.d.ts:87:256 - error TS2344: Type 'string | number | symbol' does not satisfy the constraint '"visible" | "style" | "padding" | "children" | "onLayout" | "testID" | "nativeID" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityStates" | ... 27 more ... | "theme"'.
+    //   Type 'string' is not assignable to type '"visible" | "style" | "padding" | "children" | "onLayout" | "testID" | "nativeID" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityStates" | ... 27 more ... | "theme"'.
+    //
+    // 87 }, any> & import("@callstack/react-theme-provider/typings/hoist-non-react-statics").NonReactStatics<(React.ComponentClass<Props, any> & typeof HelperText) | (React.FunctionComponent<Props> & typeof HelperText), {}>) | (React.FunctionComponent<Pick<Props, string | number | symbol> & {
+    //                                                                                                                                                                                                                                                                   ~~~~~~~~~~~~~~~~~~~~~~~~
+    //
+    //
+    // Found 2 errors.
+    //
+    // error Command failed with exit code 1.
+    // info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "esnext"
+  },
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ]
+}
