@@ -14,12 +14,10 @@ import {
   Button,
 } from 'react-native-paper';
 import {
-  RTCRtpSender,
-  RTCRtpReceiver,
   RTCVideoView,
   RTCObjectFit,
   RTCLogger as logger,
-  RTCMediaStreamTrack
+  RTCMediaStreamTrack,
 } from 'react-native-webrtc-kit';
 import { Sora } from './Sora';
 import { url, defaultChannelId, signalingKey } from './app.json';
@@ -33,7 +31,7 @@ type State = {
   multistream: bool,
   pubConn: Sora | null,
   subConn: Sora | null,
-  sender: RTCRtpSender | null;
+  senderTrack: RTCMediaStreamTrack | null;
   receiverTrack: RTCMediaStreamTrack | null;
   objectFit: RTCObjectFit
 };
@@ -62,7 +60,7 @@ export default class App extends Component<Props, State> {
       multistream: false,
       pubConn: null,
       subConn: null,
-      sender: null,
+      senderTrack: null,
       receiverTrack: null,
       objectFit: 'cover'
     };
@@ -86,7 +84,7 @@ export default class App extends Component<Props, State> {
           <View style={styles.div_header}>
             <RTCVideoView
               style={styles.videoview}
-              track={this.state.sender ? this.state.sender.track : null}
+              track={this.state.senderTrack ? this.state.senderTrack : null}
               objectFit={this.state.objectFit}
             />
           </View>
@@ -145,7 +143,7 @@ export default class App extends Component<Props, State> {
                           return each.track.kind == 'video'
                         });
                         logger.log("# publisher connection connected =>", sender);
-                        return { sender: sender }
+                        return { senderTrack: sender.track }
                       }
                     });
                   }.bind(this);
