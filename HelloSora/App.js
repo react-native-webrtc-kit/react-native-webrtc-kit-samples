@@ -165,15 +165,14 @@ export default class App extends Component<Props, State> {
                   const subConn = new Sora(url, role, prev.channelId, signalingKey);
                   subConn.ontrack = function (event) {
                     this.setState(prev => {
-                      if (event.receiver && event.track && event.track.kind === 'video') {
-                        if (!prev.receiverTrack) {
-                          logger.log('# receiver track added =>', event.track)
-                          return { receiverTrack: event.track };
-                        }
-                        else if (prev.receiverTrack.id === event.track.id) {
-                          logger.log('# receiver track removed')
-                          return { receiverTrack: null };
-                        }
+                      if (!event.receiver || !event.track || event.track.kind !== 'video') return;
+                      if (!prev.receiverTrack) {
+                        logger.log('# receiver track added =>', event.track)
+                        return { receiverTrack: event.track };
+                      }
+                      if (prev.receiverTrack.id === event.track.id) {
+                        logger.log('# receiver track removed');
+                        return { receiverTrack: null };
                       }
                     });
                   }.bind(this);
