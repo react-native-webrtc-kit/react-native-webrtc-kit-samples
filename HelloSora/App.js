@@ -163,11 +163,18 @@ export default class App extends Component<Props, State> {
                   const subConn = new Sora(url, role, prev.channelId, signalingKey);
                   subConn.ontrack = function (event) {
                     this.setState(prev => {
+                      // event に receiver が含まれ、かつ track の種類が video の場合のみ処理を行う
                       if (!event.receiver || !event.track || event.track.kind !== 'video') return;
+
+                      // track の追加
+                      // state.receiverTrack が存在しない場合、 state に event.track を追加する
                       if (!prev.receiverTrack) {
                         logger.log('# receiver track added =>', event.track)
                         return { receiverTrack: event.track };
                       }
+
+                      // track の削除
+                      // state.receiverTrack と event.track の id が同じ場合、 state から track を削除する
                       if (prev.receiverTrack.id === event.track.id) {
                         logger.log('# receiver track removed');
                         return { receiverTrack: null };
