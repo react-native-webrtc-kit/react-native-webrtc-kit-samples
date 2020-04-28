@@ -217,7 +217,7 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
     - ReactCommon/jscallinvoker (= 0.61.5)
-  - ReactNativeWebRTCKit (2020.2.0):
+  - ReactNativeWebRTCKit (2020.3.0):
     - React
     - WebRTC (~> 79.5.0)
   - RNVectorIcons (6.6.0):
@@ -345,7 +345,7 @@ SPEC CHECKSUMS:
   React-RCTText: 9ccc88273e9a3aacff5094d2175a605efa854dbe
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
-  ReactNativeWebRTCKit: 82647125a72435b737731bf4d107423b85d76697
+  ReactNativeWebRTCKit: 248e9ecb86dc90dbadf054ab2b73ba554eb6756e
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   WebRTC: f6746a0af43dae19e67ec2c26f2e10f7c8617c86
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
