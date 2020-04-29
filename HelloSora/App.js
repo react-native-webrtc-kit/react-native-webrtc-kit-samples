@@ -82,18 +82,22 @@ export default class App extends Component<Props, State> {
             {instructions}
           </Text>
           <View style={styles.div_header}>
+          {this.state.senderTrack &&
             <RTCVideoView
               style={styles.videoview}
-              track={this.state.senderTrack ? this.state.senderTrack : null}
+              track={this.state.senderTrack}
               objectFit={this.state.objectFit}
             />
+          }
           </View>
           <View style={styles.div_header}>
+          {this.state.receiverTrack &&
             <RTCVideoView
               style={styles.videoview}
-              track={this.state.receiverTrack ? this.state.receiverTrack : null}
+              track={this.state.receiverTrack}
               objectFit={this.state.objectFit}
             />
+          }
           </View>
           <View style={{ flex: 1, flexDirection: 'column' }}>
             <TextInput
@@ -203,8 +207,8 @@ export default class App extends Component<Props, State> {
                   return {
                     pubConn: null,
                     subConn: null,
-                    pubStreamValueTag: null,
-                    subStreamValueTag: null
+                    senderTrack: null,
+                    receiverTrack: null,
                   }
                 });
               }}
