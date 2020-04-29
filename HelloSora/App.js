@@ -82,18 +82,22 @@ export default class App extends Component<Props, State> {
             {instructions}
           </Text>
           <View style={styles.div_header}>
+          {!this.state.senderTrack? null :
             <RTCVideoView
               style={styles.videoview}
-              track={this.state.senderTrack ? this.state.senderTrack : null}
+              track={this.state.senderTrack}
               objectFit={this.state.objectFit}
             />
+          }
           </View>
           <View style={styles.div_header}>
+          {!this.state.receiverTrack? null :
             <RTCVideoView
               style={styles.videoview}
-              track={this.state.receiverTrack ? this.state.receiverTrack : null}
+              track={this.state.receiverTrack}
               objectFit={this.state.objectFit}
             />
+          }
           </View>
           <View style={{ flex: 1, flexDirection: 'column' }}>
             <TextInput
