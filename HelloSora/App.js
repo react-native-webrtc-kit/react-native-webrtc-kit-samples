@@ -82,7 +82,7 @@ export default class App extends Component<Props, State> {
             {instructions}
           </Text>
           <View style={styles.div_header}>
-          {!this.state.senderTrack? null :
+          {this.state.senderTrack &&
             <RTCVideoView
               style={styles.videoview}
               track={this.state.senderTrack}
@@ -91,7 +91,7 @@ export default class App extends Component<Props, State> {
           }
           </View>
           <View style={styles.div_header}>
-          {!this.state.receiverTrack? null :
+          {this.state.receiverTrack &&
             <RTCVideoView
               style={styles.videoview}
               track={this.state.receiverTrack}
@@ -167,7 +167,6 @@ export default class App extends Component<Props, State> {
                   const subConn = new Sora(url, role, prev.channelId, signalingKey);
                   subConn.ontrack = function (event) {
                     this.setState(prev => {
-
                       // event に receiver が含まれ、かつ track の種類が video の場合のみ処理を行う
                       if (!event.receiver || !event.track || event.track.kind !== 'video') return;
 
