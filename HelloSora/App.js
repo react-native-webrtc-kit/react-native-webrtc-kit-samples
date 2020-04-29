@@ -163,6 +163,7 @@ export default class App extends Component<Props, State> {
                   const subConn = new Sora(url, role, prev.channelId, signalingKey);
                   subConn.ontrack = function (event) {
                     this.setState(prev => {
+
                       // event に receiver が含まれ、かつ track の種類が video の場合のみ処理を行う
                       if (!event.receiver || !event.track || event.track.kind !== 'video') return;
 
@@ -203,8 +204,8 @@ export default class App extends Component<Props, State> {
                   return {
                     pubConn: null,
                     subConn: null,
-                    pubStreamValueTag: null,
-                    subStreamValueTag: null
+                    senderTrack: null,
+                    receiverTrack: null,
                   }
                 });
               }}
