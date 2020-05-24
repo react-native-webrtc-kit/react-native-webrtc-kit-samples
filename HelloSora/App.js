@@ -82,7 +82,7 @@ export default class App extends Component<Props, State> {
             {instructions}
           </Text>
           <View style={styles.div_header}>
-          {this.state.senderTrack &&
+          {(this.state.pubConn !== null && this.state.senderTrack !== null) &&
             <RTCVideoView
               style={styles.videoview}
               track={this.state.senderTrack}
@@ -91,7 +91,7 @@ export default class App extends Component<Props, State> {
           }
           </View>
           <View style={styles.div_header}>
-          {this.state.receiverTrack &&
+          {(this.state.subConn !== null && this.state.receiverTrack !== null) &&
             <RTCVideoView
               style={styles.videoview}
               track={this.state.receiverTrack}
@@ -132,6 +132,7 @@ export default class App extends Component<Props, State> {
           </View>
           <View>
             <Button
+              disabled={this.state.pubConn}
               raised
               mode="outlined"
               onPress={() => {
@@ -159,6 +160,7 @@ export default class App extends Component<Props, State> {
               パブリッシャーで接続する
             </Button>
             <Button
+              disabled={this.state.subConn}
               raised
               mode="outlined"
               onPress={() => {
