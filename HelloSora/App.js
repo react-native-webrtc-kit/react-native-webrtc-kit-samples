@@ -132,7 +132,7 @@ export default class App extends Component<Props, State> {
           </View>
           <View>
             <Button
-              disabled={this.state.pubConn}
+              disabled={this.state.pubConn !== null}
               raised
               mode="outlined"
               onPress={() => {
@@ -160,7 +160,7 @@ export default class App extends Component<Props, State> {
               パブリッシャーで接続する
             </Button>
             <Button
-              disabled={this.state.subConn}
+              disabled={this.state.subConn !== null}
               raised
               mode="outlined"
               onPress={() => {
