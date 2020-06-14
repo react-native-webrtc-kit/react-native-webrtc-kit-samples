@@ -122,6 +122,7 @@ export class SoraSignalingMessage {
  */
 export const SORA_EVENTS = [
   'connectionstatechange',
+  'track',
 ];
 
 /**
@@ -304,10 +305,6 @@ export class Sora extends SoraEventTarget {
     this._pc.onaddstream = this._onAddStream.bind(this);
     this._pc.onremovestream = this._onRemoveStream.bind(this);
     this._pc.ontrack = this._onTrack.bind(this);
-    if (Platform.OS === 'ios') {
-      // Android は現状 onRemoveTrack を検知できないので、iOS のみ onRemoveTrack を bind している。
-      this._pc.onremovetrack = this._onRemoveTrack.bind(this);
-    }
   }
 
   _onWebSocketOpen(): void {
@@ -572,16 +569,11 @@ export class Sora extends SoraEventTarget {
   }
 
   _onTrack(event: Object): void {
-    logger.log("# Sora: track added =>", event.track);
+    logger.log("# Sora: ontrack =>", event.track);
     this.dispatchEvent(new SoraEvent('track', event));
-  }
-
-  _onRemoveTrack(event: Object): void {
-    logger.log("# Sora: track removed =>", event);
   }
 
   _onAnyError(error: Object): void {
     logger.log("# Sora: any error => ", error);
   }
-
 }

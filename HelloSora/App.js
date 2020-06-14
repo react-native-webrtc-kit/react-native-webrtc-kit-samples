@@ -14,11 +14,10 @@ import {
   Button,
 } from 'react-native-paper';
 import {
-  RTCRtpSender,
-  RTCRtpReceiver,
   RTCVideoView,
   RTCObjectFit,
-  RTCLogger as logger
+  RTCLogger as logger,
+  RTCMediaStreamTrack,
 } from 'react-native-webrtc-kit';
 import { Sora } from './Sora';
 import { url, defaultChannelId, signalingKey } from './app.json';
@@ -32,8 +31,8 @@ type State = {
   multistream: bool,
   pubConn: Sora | null,
   subConn: Sora | null,
-  sender: RTCRtpSender | null;
-  receiver: RTCRtpReceiver | null;
+  senderTrack: RTCMediaStreamTrack | null;
+  receiverTrack: RTCMediaStreamTrack | null;
   objectFit: RTCObjectFit
 };
 
@@ -61,8 +60,8 @@ export default class App extends Component<Props, State> {
       multistream: false,
       pubConn: null,
       subConn: null,
-      sender: null,
-      receiver: null,
+      senderTrack: null,
+      receiverTrack: null,
       objectFit: 'cover'
     };
   }
@@ -83,18 +82,22 @@ export default class App extends Component<Props, State> {
             {instructions}
           </Text>
           <View style={styles.div_header}>
+          {(this.state.pubConn !== null && this.state.senderTrack !== null) &&
             <RTCVideoView
               style={styles.videoview}
-              track={this.state.sender ? this.state.sender.track : null}
+              track={this.state.senderTrack}
               objectFit={this.state.objectFit}
             />
+          }
           </View>
           <View style={styles.div_header}>
+          {(this.state.subConn !== null && this.state.receiverTrack !== null) &&
             <RTCVideoView
               style={styles.videoview}
-              track={this.state.receiver ? this.state.receiver.track : null}
+              track={this.state.receiverTrack}
               objectFit={this.state.objectFit}
             />
+          }
           </View>
           <View style={{ flex: 1, flexDirection: 'column' }}>
             <TextInput
@@ -129,6 +132,7 @@ export default class App extends Component<Props, State> {
           </View>
           <View>
             <Button
+              disabled={this.state.pubConn}
               raised
               mode="outlined"
               onPress={() => {
@@ -144,7 +148,7 @@ export default class App extends Component<Props, State> {
                           return each.track.kind == 'video'
                         });
                         logger.log("# publisher connection connected =>", sender);
-                        return { sender: sender }
+                        return { senderTrack: sender.track }
                       }
                     });
                   }.bind(this);
@@ -156,22 +160,30 @@ export default class App extends Component<Props, State> {
               パブリッシャーで接続する
             </Button>
             <Button
+              disabled={this.state.subConn}
               raised
               mode="outlined"
               onPress={() => {
                 this.setState(prev => {
                   const role = this.state.multistream ? 'groupsub' : 'subscriber';
                   const subConn = new Sora(url, role, prev.channelId, signalingKey);
-                  subConn.onconnectionstatechange = function (event) {
+                  subConn.ontrack = function (event) {
                     this.setState(prev => {
-                      logger.log("# subscriber connection state change => ",
-                        event.target.connectionState);
-                      if (event.target.connectionState == 'connected') {
-                        var recv = prev.subConn._pc.receivers.find(each => {
-                          return each.track.kind == 'video'
-                        });
-                        logger.log("# subscriber connection connected =>", recv);
-                        return { receiver: recv }
+                      // event に receiver が含まれ、かつ track の種類が video の場合のみ処理を行う
+                      if (!event.receiver || !event.track || event.track.kind !== 'video') return;
+
+                      // track の追加
+                      // state.receiverTrack が存在しない場合、 state に event.track を追加する
+                      if (!prev.receiverTrack) {
+                        logger.log('# receiver track added =>', event.track)
+                        return { receiverTrack: event.track };
+                      }
+
+                      // track の削除
+                      // state.receiverTrack と event.track の id が同じ場合、 state から track を削除する
+                      if (prev.receiverTrack.id === event.track.id) {
+                        logger.log('# receiver track removed');
+                        return { receiverTrack: null };
                       }
                     });
                   }.bind(this);
@@ -197,8 +209,8 @@ export default class App extends Component<Props, State> {
                   return {
                     pubConn: null,
                     subConn: null,
-                    pubStreamValueTag: null,
-                    subStreamValueTag: null
+                    senderTrack: null,
+                    receiverTrack: null,
                   }
                 });
               }}
