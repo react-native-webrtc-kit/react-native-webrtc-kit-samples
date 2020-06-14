@@ -1,4 +1,4 @@
-# WebRTC Signaling Server Ayame を利用した React Native サンプル
+# Ayame を利用した React Native サンプル
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Actions Status](https://github.com/OpenAyame/ayame-react-native-sample/workflows/iOS%20Test/badge.svg)](https://github.com/OpenAyame/ayame-react-native-sample/actions)
