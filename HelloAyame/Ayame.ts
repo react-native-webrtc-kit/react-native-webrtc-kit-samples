@@ -359,15 +359,17 @@ export class Ayame extends AyameEventTarget {
     this._sendSdp(this._pc.localDescription);
   }
 
-  async _setCandidate(ice: {candidate: Object}) {
+  async _setCandidate(event: {ice: {candidate: Object}}) {
+    logger.log('# Ayame: set candidate, candidate => ', event.ice);
     if (!this._pc) {
       return;
     }
-    if (ice && ice.candidate) {
+    if (event.ice && event.ice.candidate) {
       try {
-        const candidate = new RTCIceCandidate(ice.candidate);
+        const candidate = new RTCIceCandidate(event.ice);
         await this._pc.addIceCandidate(candidate);
       } catch (_e) {
+        logger.log('set candidate error');
         // TODO(kdxu): ice candidate の追加に失敗するときがあるので調べる
       }
     }
