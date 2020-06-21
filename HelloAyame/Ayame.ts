@@ -368,8 +368,8 @@ export class Ayame extends AyameEventTarget {
       try {
         const candidate = new RTCIceCandidate(event.ice);
         await this._pc.addIceCandidate(candidate);
-      } catch (_e) {
-        logger.log('set candidate error');
+      } catch (error) {
+        logger.log('# Ayame: set candidate error =>', error);
         // TODO(kdxu): ice candidate の追加に失敗するときがあるので調べる
       }
     }
