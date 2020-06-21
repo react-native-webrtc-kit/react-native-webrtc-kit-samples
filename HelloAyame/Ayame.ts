@@ -145,7 +145,7 @@ export class Ayame extends AyameEventTarget {
   }
 
   _setConnectionState(state: AyameConnectionState) {
-    logger.log('# Ayame: set connection state => ', state);
+    logger.log('# Ayame: set connection state =>', state);
     this.connectionState = state;
     this.dispatchEvent(new RTCEvent('connectionstatechange'));
   }
@@ -201,8 +201,8 @@ export class Ayame extends AyameEventTarget {
     try {
       logger.group('# Ayame: received WebSocket message', message.data);
       const signal = JSON.parse(message.data);
-      logger.log('# Ayame: signaling type => ', signal.type);
-      logger.log('# Ayame: connection state => ', this.connectionState);
+      logger.log('# Ayame: signaling type =>', signal.type);
+      logger.log('# Ayame: connection state =>', this.connectionState);
       switch (signal.type) {
         case 'accept':
           logger.log('# Ayame: accepted client');
@@ -210,7 +210,7 @@ export class Ayame extends AyameEventTarget {
             // iceServers をセットする
             let iceServers = [];
             for (const iceServer of signal.iceServers) {
-              logger.log('# Ayame: ICE server => ', iceServer);
+              logger.log('# Ayame: ICE server =>', iceServer);
               for (const url of iceServer.urls) {
                 iceServers.push(
                   new RTCIceServer(
@@ -231,7 +231,7 @@ export class Ayame extends AyameEventTarget {
           this.disconnect();
           break;
         case AyameSignalingType.ANSWER:
-          logger.log('# Ayame: answer set remote description => ', signal);
+          logger.log('# Ayame: answer set remote description =>', signal);
           await this._setAnswer(signal);
           break;
         case AyameSignalingType.OFFER:
@@ -256,7 +256,7 @@ export class Ayame extends AyameEventTarget {
   }
 
   _onConnectionStateChange(event: {type: string}) {
-    logger.group('# Ayame: connection state changed => ', event.type);
+    logger.group('# Ayame: connection state changed =>', event.type);
     const oldState: AyameConnectionState = this.connectionState;
 
     var newState: AyameConnectionState = AyameConnectionState.DISCONNECTED;
@@ -281,7 +281,7 @@ export class Ayame extends AyameEventTarget {
       default:
         return;
     }
-    logger.log('# Ayame: set new connection state => ', newState);
+    logger.log('# Ayame: set new connection state =>', newState);
     this.connectionState = newState;
     if (oldState !== newState) {
       // dispatchEvent の型定義を満たすことができなかったため @ts-ignore しています
@@ -294,7 +294,7 @@ export class Ayame extends AyameEventTarget {
 
   _onSignalingStateChange(event: {type: string}) {
     logger.log(
-      '# Ayame: peer connection signaling state changed => ',
+      '# Ayame: peer connection signaling state changed =>',
       event.type,
     );
   }
@@ -312,7 +312,7 @@ export class Ayame extends AyameEventTarget {
           sdpMid: event.candidate.sdpMid,
         },
       };
-      logger.log('# Ayame: send candidate => ', msg);
+      logger.log('# Ayame: send candidate =>', msg);
       this._send(msg);
     }
     logger.groupEnd();
@@ -346,7 +346,7 @@ export class Ayame extends AyameEventTarget {
 
   async _setOffer(sessionDescription: AyameSignalingMessage) {
     this._pc = await this._createPeerConnection();
-    logger.log('# Ayame: offer set remote description => ', sessionDescription);
+    logger.log('# Ayame: offer set remote description =>', sessionDescription);
     await this._pc.setRemoteDescription(
       new RTCSessionDescription(
         sessionDescription.type,
@@ -360,7 +360,7 @@ export class Ayame extends AyameEventTarget {
   }
 
   async _setCandidate(event: {ice: {candidate: Object}}) {
-    logger.log('# Ayame: set candidate, candidate => ', event.ice);
+    logger.log('# Ayame: set candidate, candidate =>', event.ice);
     if (!this._pc) {
       return;
     }
@@ -396,6 +396,6 @@ export class Ayame extends AyameEventTarget {
   }
 
   _onAnyError(error: object) {
-    logger.log('# Ayame: any error => ', error);
+    logger.log('# Ayame: any error =>', error);
   }
 }
