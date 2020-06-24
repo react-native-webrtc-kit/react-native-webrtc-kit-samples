@@ -1,9 +1,9 @@
-name: iOS Test
+name: HelloAyame-iOS-Test
 
 on: push
 jobs:
   test:
-    name: iOS Test
+    name: iOS-Test
     runs-on: macos-latest
     strategy:
       matrix:

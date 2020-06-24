@@ -1,9 +1,9 @@
-name: Android Test
+name: HelloAyame-Android-Test
 
 on: push
 jobs:
   test:
-    name: Android Test
+    name: Android-Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
