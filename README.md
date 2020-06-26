@@ -1,6 +1,6 @@
 # React Native WebRTC Kit のサンプルアプリケーション
 
-[React Native WebRTC Kit](https://github.com/react-native-webrtc-kit/react-native-webrtc-kit) のサンプルアプリケーション集です。
+本リポジトリは [React Native WebRTC Kit](https://github.com/react-native-webrtc-kit/react-native-webrtc-kit) のサンプルアプリケーション集です。
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Actions Status](https://github.com/react-native-webrtc-kit/react-native-webrtc-kit-samples/workflows/HelloSora-iOS-Test/badge.svg)](https://github.com/react-native-webrtc-kit/react-native-webrtc-kit-samples/actions)
