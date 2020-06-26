@@ -1,0 +1,30 @@
+name: HelloAyame-Android-Test
+
+on: push
+jobs:
+  test:
+    name: Android-Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [11.x]
+    steps:
+      - uses: actions/checkout@v1
+      - name: set up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: yarn install and react-native link
+        run: |
+          yarn install
+          $(npm bin)/react-native link --platforms android
+        working-directory: ./HelloAyame
+      - name: gradlew check
+        run: |
+          cd android/
+          ./gradlew check
+        working-directory: ./HelloAyame
