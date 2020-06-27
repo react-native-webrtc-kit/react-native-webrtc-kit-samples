@@ -8,19 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* HelloSoraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* HelloSoraTests.m */; };
+		0786495063FE41461BBC9F93 /* libPods-HelloSora-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B115B18601F9FD862AF1F51C /* libPods-HelloSora-tvOS.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		16AC4B2C7318EBE2CB2ABD04 /* libPods-HelloSora.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6CDFB42E0DA7F396B2D4450 /* libPods-HelloSora.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* HelloSoraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* HelloSoraTests.m */; };
-		52269A73233178D386D7B204 /* libPods-HelloSora-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE6A977154FFC1376BCA17F /* libPods-HelloSora-tvOS.a */; };
-		686BC52107D88989EC2A4812 /* libPods-HelloSora.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C16247470C49851C6DA8F1F /* libPods-HelloSora.a */; };
-		9CC97D4708FFBD7ABD561959 /* libPods-HelloSora-HelloSoraTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 993A9C0743503608B5BC8649 /* libPods-HelloSora-HelloSoraTests.a */; };
-		ADBAC4CC24A79D3700BC390C /* HelloSora.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBAC4CB24A79D3700BC390C /* HelloSora.swift */; };
-		ADEE69BCB429E2CB70A376B2 /* libPods-HelloSora-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 36568F09CA9A44138AF7C167 /* libPods-HelloSora-tvOSTests.a */; };
+		5DDD11D13983B7151EF71A86 /* libPods-HelloSora-HelloSoraTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE568A3E2482246D56E0BC2F /* libPods-HelloSora-HelloSoraTests.a */; };
+		F839719E7DBE4C03F8B1FC58 /* libPods-HelloSora-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4B146B9E7D7C8AA937DF304 /* libPods-HelloSora-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,8 +44,7 @@
 		00E356EE1AD99517003FC87E /* HelloSoraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelloSoraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* HelloSoraTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelloSoraTests.m; sourceTree = "<group>"; };
-		040D3F5BB37E416EB14919AA /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		0D88C7272E3F424E9CD866D1 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		08A17EACF79AB41BC98B7282 /* Pods-HelloSora.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora.release.xcconfig"; path = "Target Support Files/Pods-HelloSora/Pods-HelloSora.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* HelloSora.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloSora.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = HelloSora/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = HelloSora/AppDelegate.m; sourceTree = "<group>"; };
@@ -54,38 +52,19 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = HelloSora/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = HelloSora/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = HelloSora/main.m; sourceTree = "<group>"; };
-		183B87DD44139F193F447819 /* Pods-HelloSora-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-HelloSora-tvOSTests/Pods-HelloSora-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		187725FD3A1093BE2DED583A /* Pods-HelloSora-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora-tvOS.release.xcconfig"; path = "Target Support Files/Pods-HelloSora-tvOS/Pods-HelloSora-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		1C16247470C49851C6DA8F1F /* libPods-HelloSora.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HelloSora.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2C2B03AB6D64A76F09A6728D /* Pods-HelloSora-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-HelloSora-tvOS/Pods-HelloSora-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		217637A683BE3E55C2E6301A /* Pods-HelloSora-HelloSoraTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora-HelloSoraTests.debug.xcconfig"; path = "Target Support Files/Pods-HelloSora-HelloSoraTests/Pods-HelloSora-HelloSoraTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* HelloSora-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HelloSora-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* HelloSora-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "HelloSora-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3283BBF189E945B4B8C7D287 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		36568F09CA9A44138AF7C167 /* libPods-HelloSora-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HelloSora-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		39CBFD7F9FF1724499BCA077 /* Pods-HelloSora.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora.debug.xcconfig"; path = "Target Support Files/Pods-HelloSora/Pods-HelloSora.debug.xcconfig"; sourceTree = "<group>"; };
-		42BFCEC9B45D4BD1B44E5669 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		511A879120604D80A01D296E /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
-		520FED7D1FAF488285CA6724 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		5215561281F77CFAC164730C /* Pods-HelloSoraTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSoraTests.release.xcconfig"; path = "Target Support Files/Pods-HelloSoraTests/Pods-HelloSoraTests.release.xcconfig"; sourceTree = "<group>"; };
-		5386802C2F651CBEB88373E2 /* Pods-HelloSora.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora.release.xcconfig"; path = "Target Support Files/Pods-HelloSora/Pods-HelloSora.release.xcconfig"; sourceTree = "<group>"; };
-		596C331DD0A01CB7DCA7EE4E /* Pods-HelloSora-HelloSoraTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora-HelloSoraTests.debug.xcconfig"; path = "Target Support Files/Pods-HelloSora-HelloSoraTests/Pods-HelloSora-HelloSoraTests.debug.xcconfig"; sourceTree = "<group>"; };
-		68B7E0EEC32848B18D8AED03 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
-		6EE6A977154FFC1376BCA17F /* libPods-HelloSora-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HelloSora-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		88D5297D30EB4CB183E0B35B /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
-		993A9C0743503608B5BC8649 /* libPods-HelloSora-HelloSoraTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HelloSora-HelloSoraTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		995F09CD56E6F597E651F150 /* Pods-HelloSora-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-HelloSora-tvOSTests/Pods-HelloSora-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		A00C051EE33DCA749FF83D46 /* Pods-HelloSora-HelloSoraTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora-HelloSoraTests.release.xcconfig"; path = "Target Support Files/Pods-HelloSora-HelloSoraTests/Pods-HelloSora-HelloSoraTests.release.xcconfig"; sourceTree = "<group>"; };
-		A18FB043622D44D7BFA2BE56 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		A4223D093BA54229A704A15C /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
-		AD05870024A7899D0011F083 /* HelloSora-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HelloSora-Bridging-Header.h"; sourceTree = "<group>"; };
-		ADBAC4CB24A79D3700BC390C /* HelloSora.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloSora.swift; sourceTree = "<group>"; };
-		C59D6EA9E7D24FA6B71A8783 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
-		C6A857C2FF104A14890248FB /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
-		C81232F9F44F4024A397891B /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		C822353E16DC4FBAB5E8C3AF /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
-		C937947696229E114ACB13DE /* Pods-HelloSoraTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSoraTests.debug.xcconfig"; path = "Target Support Files/Pods-HelloSoraTests/Pods-HelloSoraTests.debug.xcconfig"; sourceTree = "<group>"; };
-		CD1E6637F88D4B0482E74E2C /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
-		CDAF51048CF34C39A9606A22 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
+		4F25BC9F7F547E97FCCBF625 /* Pods-HelloSora-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-HelloSora-tvOSTests/Pods-HelloSora-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		766F8C7932B5074DD59690FA /* Pods-HelloSora-HelloSoraTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora-HelloSoraTests.release.xcconfig"; path = "Target Support Files/Pods-HelloSora-HelloSoraTests/Pods-HelloSora-HelloSoraTests.release.xcconfig"; sourceTree = "<group>"; };
+		91AF72150FC07219979CF549 /* Pods-HelloSora-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora-tvOS.release.xcconfig"; path = "Target Support Files/Pods-HelloSora-tvOS/Pods-HelloSora-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		AE568A3E2482246D56E0BC2F /* libPods-HelloSora-HelloSoraTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HelloSora-HelloSoraTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B115B18601F9FD862AF1F51C /* libPods-HelloSora-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HelloSora-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4B146B9E7D7C8AA937DF304 /* libPods-HelloSora-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HelloSora-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB9281522790A88AADD6343A /* Pods-HelloSora-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-HelloSora-tvOS/Pods-HelloSora-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		CE0F34648B2BF6AD24862024 /* Pods-HelloSora.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora.debug.xcconfig"; path = "Target Support Files/Pods-HelloSora/Pods-HelloSora.debug.xcconfig"; sourceTree = "<group>"; };
+		D6CDFB42E0DA7F396B2D4450 /* libPods-HelloSora.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HelloSora.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFDC911E11B82F2AD0AE2C78 /* Pods-HelloSora-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSora-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-HelloSora-tvOSTests/Pods-HelloSora-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -95,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CC97D4708FFBD7ABD561959 /* libPods-HelloSora-HelloSoraTests.a in Frameworks */,
+				5DDD11D13983B7151EF71A86 /* libPods-HelloSora-HelloSoraTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				686BC52107D88989EC2A4812 /* libPods-HelloSora.a in Frameworks */,
+				16AC4B2C7318EBE2CB2ABD04 /* libPods-HelloSora.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52269A73233178D386D7B204 /* libPods-HelloSora-tvOS.a in Frameworks */,
+				0786495063FE41461BBC9F93 /* libPods-HelloSora-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,7 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ADEE69BCB429E2CB70A376B2 /* libPods-HelloSora-tvOSTests.a in Frameworks */,
+				F839719E7DBE4C03F8B1FC58 /* libPods-HelloSora-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,23 +122,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		08EA903ADDA75C82AA6BDE04 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				39CBFD7F9FF1724499BCA077 /* Pods-HelloSora.debug.xcconfig */,
-				5386802C2F651CBEB88373E2 /* Pods-HelloSora.release.xcconfig */,
-				2C2B03AB6D64A76F09A6728D /* Pods-HelloSora-tvOS.debug.xcconfig */,
-				187725FD3A1093BE2DED583A /* Pods-HelloSora-tvOS.release.xcconfig */,
-				995F09CD56E6F597E651F150 /* Pods-HelloSora-tvOSTests.debug.xcconfig */,
-				183B87DD44139F193F447819 /* Pods-HelloSora-tvOSTests.release.xcconfig */,
-				C937947696229E114ACB13DE /* Pods-HelloSoraTests.debug.xcconfig */,
-				5215561281F77CFAC164730C /* Pods-HelloSoraTests.release.xcconfig */,
-				596C331DD0A01CB7DCA7EE4E /* Pods-HelloSora-HelloSoraTests.debug.xcconfig */,
-				A00C051EE33DCA749FF83D46 /* Pods-HelloSora-HelloSoraTests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* HelloSora */ = {
 			isa = PBXGroup;
 			children = (
@@ -170,8 +132,6 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				AD05870024A7899D0011F083 /* HelloSora-Bridging-Header.h */,
-				ADBAC4CB24A79D3700BC390C /* HelloSora.swift */,
 			);
 			name = HelloSora;
 			sourceTree = "<group>";
@@ -181,35 +141,12 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				1C16247470C49851C6DA8F1F /* libPods-HelloSora.a */,
-				6EE6A977154FFC1376BCA17F /* libPods-HelloSora-tvOS.a */,
-				36568F09CA9A44138AF7C167 /* libPods-HelloSora-tvOSTests.a */,
-				993A9C0743503608B5BC8649 /* libPods-HelloSora-HelloSoraTests.a */,
+				D6CDFB42E0DA7F396B2D4450 /* libPods-HelloSora.a */,
+				AE568A3E2482246D56E0BC2F /* libPods-HelloSora-HelloSoraTests.a */,
+				B115B18601F9FD862AF1F51C /* libPods-HelloSora-tvOS.a */,
+				C4B146B9E7D7C8AA937DF304 /* libPods-HelloSora-tvOSTests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		5C531DC821A34C01A130CAF9 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				C6A857C2FF104A14890248FB /* AntDesign.ttf */,
-				42BFCEC9B45D4BD1B44E5669 /* Entypo.ttf */,
-				A18FB043622D44D7BFA2BE56 /* EvilIcons.ttf */,
-				C822353E16DC4FBAB5E8C3AF /* Feather.ttf */,
-				520FED7D1FAF488285CA6724 /* FontAwesome.ttf */,
-				CDAF51048CF34C39A9606A22 /* FontAwesome5_Brands.ttf */,
-				88D5297D30EB4CB183E0B35B /* FontAwesome5_Regular.ttf */,
-				68B7E0EEC32848B18D8AED03 /* FontAwesome5_Solid.ttf */,
-				CD1E6637F88D4B0482E74E2C /* Fontisto.ttf */,
-				3283BBF189E945B4B8C7D287 /* Foundation.ttf */,
-				0D88C7272E3F424E9CD866D1 /* Ionicons.ttf */,
-				040D3F5BB37E416EB14919AA /* MaterialCommunityIcons.ttf */,
-				511A879120604D80A01D296E /* MaterialIcons.ttf */,
-				A4223D093BA54229A704A15C /* Octicons.ttf */,
-				C81232F9F44F4024A397891B /* SimpleLineIcons.ttf */,
-				C59D6EA9E7D24FA6B71A8783 /* Zocial.ttf */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -227,8 +164,7 @@
 				00E356EF1AD99517003FC87E /* HelloSoraTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				08EA903ADDA75C82AA6BDE04 /* Pods */,
-				5C531DC821A34C01A130CAF9 /* Resources */,
+				F1AB07F29E064E2E7B60963B /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -246,6 +182,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F1AB07F29E064E2E7B60963B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CE0F34648B2BF6AD24862024 /* Pods-HelloSora.debug.xcconfig */,
+				08A17EACF79AB41BC98B7282 /* Pods-HelloSora.release.xcconfig */,
+				217637A683BE3E55C2E6301A /* Pods-HelloSora-HelloSoraTests.debug.xcconfig */,
+				766F8C7932B5074DD59690FA /* Pods-HelloSora-HelloSoraTests.release.xcconfig */,
+				CB9281522790A88AADD6343A /* Pods-HelloSora-tvOS.debug.xcconfig */,
+				91AF72150FC07219979CF549 /* Pods-HelloSora-tvOS.release.xcconfig */,
+				DFDC911E11B82F2AD0AE2C78 /* Pods-HelloSora-tvOSTests.debug.xcconfig */,
+				4F25BC9F7F547E97FCCBF625 /* Pods-HelloSora-tvOSTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -253,12 +205,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "HelloSoraTests" */;
 			buildPhases = (
-				0849F41722FF339148F02EF7 /* [CP] Check Pods Manifest.lock */,
+				E27D43413F624F2042C9971D /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				596CFA5683B0A290E8C30FA4 /* [CP] Embed Pods Frameworks */,
-				96D0CB351FB0468B9773A47E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -274,14 +224,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "HelloSora" */;
 			buildPhases = (
-				BC5E250F48C0C28EE0BE5B3C /* [CP] Check Pods Manifest.lock */,
+				A4C66B77B753414068E22326 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				22B21FB9FEDB4F2636655B24 /* [CP] Embed Pods Frameworks */,
-				42F77F3F601A97FF205B7D94 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -296,7 +244,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "HelloSora-tvOS" */;
 			buildPhases = (
-				A523E6C1968519559A6C3555 /* [CP] Check Pods Manifest.lock */,
+				14CA5BAAF3B001A5C3777109 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -316,7 +264,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "HelloSora-tvOSTests" */;
 			buildPhases = (
-				7466527B8D2CAB7C83E501D0 /* [CP] Check Pods Manifest.lock */,
+				A723DCFFDBCEBE643000482A /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -337,17 +285,14 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1150;
-				ORGANIZATIONNAME = Facebook;
+				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = LHVJ6BF95N;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = LHVJ6BF95N;
-						LastSwiftMigration = 1150;
+						LastSwiftMigration = 1120;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -362,10 +307,9 @@
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "HelloSora" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -431,197 +375,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		0849F41722FF339148F02EF7 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HelloSora-HelloSoraTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		22B21FB9FEDB4F2636655B24 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloSora/Pods-HelloSora-frameworks.sh",
-				"${PODS_ROOT}/WebRTC/WebRTC.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloSora/Pods-HelloSora-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native Code And Images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		42F77F3F601A97FF205B7D94 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloSora/Pods-HelloSora-resources.sh",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloSora/Pods-HelloSora-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		596CFA5683B0A290E8C30FA4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloSora-HelloSoraTests/Pods-HelloSora-HelloSoraTests-frameworks.sh",
-				"${PODS_ROOT}/WebRTC/WebRTC.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloSora-HelloSoraTests/Pods-HelloSora-HelloSoraTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7466527B8D2CAB7C83E501D0 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HelloSora-tvOSTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		96D0CB351FB0468B9773A47E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloSora-HelloSoraTests/Pods-HelloSora-HelloSoraTests-resources.sh",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloSora-HelloSoraTests/Pods-HelloSora-HelloSoraTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A523E6C1968519559A6C3555 /* [CP] Check Pods Manifest.lock */ = {
+		14CA5BAAF3B001A5C3777109 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -643,7 +397,21 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BC5E250F48C0C28EE0BE5B3C /* [CP] Check Pods Manifest.lock */ = {
+		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native Code And Images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		A4C66B77B753414068E22326 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -659,6 +427,50 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-HelloSora-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A723DCFFDBCEBE643000482A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HelloSora-tvOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E27D43413F624F2042C9971D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HelloSora-HelloSoraTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -718,7 +530,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ADBAC4CC24A79D3700BC390C /* HelloSora.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -771,12 +582,9 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 596C331DD0A01CB7DCA7EE4E /* Pods-HelloSora-HelloSoraTests.debug.xcconfig */;
+			baseConfigurationReference = 217637A683BE3E55C2E6301A /* Pods-HelloSora-HelloSoraTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = LHVJ6BF95N;
-				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -797,13 +605,10 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A00C051EE33DCA749FF83D46 /* Pods-HelloSora-HelloSoraTests.release.xcconfig */;
+			baseConfigurationReference = 766F8C7932B5074DD59690FA /* Pods-HelloSora-HelloSoraTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = LHVJ6BF95N;
-				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = HelloSoraTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -820,15 +625,16 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 39CBFD7F9FF1724499BCA077 /* Pods-HelloSora.debug.xcconfig */;
+			baseConfigurationReference = CE0F34648B2BF6AD24862024 /* Pods-HelloSora.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = LHVJ6BF95N;
 				ENABLE_BITCODE = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"FB_SONARKIT_ENABLED=1",
+				);
 				INFOPLIST_FILE = HelloSora/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -838,7 +644,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = HelloSora;
-				SWIFT_OBJC_BRIDGING_HEADER = "HelloSora-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -847,13 +652,11 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5386802C2F651CBEB88373E2 /* Pods-HelloSora.release.xcconfig */;
+			baseConfigurationReference = 08A17EACF79AB41BC98B7282 /* Pods-HelloSora.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = LHVJ6BF95N;
 				INFOPLIST_FILE = HelloSora/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -863,7 +666,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = HelloSora;
-				SWIFT_OBJC_BRIDGING_HEADER = "HelloSora-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -871,7 +673,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2C2B03AB6D64A76F09A6728D /* Pods-HelloSora-tvOS.debug.xcconfig */;
+			baseConfigurationReference = CB9281522790A88AADD6343A /* Pods-HelloSora-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -889,7 +691,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.HelloSora-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.HelloSora-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -899,7 +701,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 187725FD3A1093BE2DED583A /* Pods-HelloSora-tvOS.release.xcconfig */;
+			baseConfigurationReference = 91AF72150FC07219979CF549 /* Pods-HelloSora-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -917,7 +719,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.HelloSora-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.HelloSora-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -927,7 +729,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 995F09CD56E6F597E651F150 /* Pods-HelloSora-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = DFDC911E11B82F2AD0AE2C78 /* Pods-HelloSora-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -944,7 +746,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.HelloSora-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.HelloSora-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HelloSora-tvOS.app/HelloSora-tvOS";
@@ -954,7 +756,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 183B87DD44139F193F447819 /* Pods-HelloSora-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 4F25BC9F7F547E97FCCBF625 /* Pods-HelloSora-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -971,7 +773,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.HelloSora-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.HelloSora-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HelloSora-tvOS.app/HelloSora-tvOS";
@@ -1018,7 +820,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
-					"FB_SONARKIT_ENABLED=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1028,6 +829,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
@@ -1080,6 +882,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",

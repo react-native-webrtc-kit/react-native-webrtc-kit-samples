@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1150"
+   LastUpgradeVersion = "1130"
    version = "1.3">
    <BuildAction
-      parallelizeBuildables = "NO"
+      parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
@@ -14,37 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "83CBBA2D1A601D0E00E9B192"
-               BuildableName = "libReact.a"
-               BlueprintName = "React"
-               ReferencedContainer = "container:../node_modules/react-native/React/React.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "HelloSora.app"
-               BlueprintName = "HelloSora"
-               ReferencedContainer = "container:HelloSora.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "HelloSoraTests.xctest"
-               BlueprintName = "HelloSoraTests"
+               BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
+               BuildableName = "HelloSora-tvOS.app"
+               BlueprintName = "HelloSora-tvOS"
                ReferencedContainer = "container:HelloSora.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -55,23 +27,14 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "HelloSora.app"
-            BlueprintName = "HelloSora"
-            ReferencedContainer = "container:HelloSora.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "HelloSoraTests.xctest"
-               BlueprintName = "HelloSoraTests"
+               BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
+               BuildableName = "HelloSora-tvOSTests.xctest"
+               BlueprintName = "HelloSora-tvOSTests"
                ReferencedContainer = "container:HelloSora.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -91,9 +54,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "HelloSora.app"
-            BlueprintName = "HelloSora"
+            BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
+            BuildableName = "HelloSora-tvOS.app"
+            BlueprintName = "HelloSora-tvOS"
             ReferencedContainer = "container:HelloSora.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -108,9 +71,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "HelloSora.app"
-            BlueprintName = "HelloSora"
+            BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
+            BuildableName = "HelloSora-tvOS.app"
+            BlueprintName = "HelloSora-tvOS"
             ReferencedContainer = "container:HelloSora.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
