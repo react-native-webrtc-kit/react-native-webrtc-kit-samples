@@ -15,7 +15,7 @@
     "react-native": "0.62.0",
     "react-native-paper": "^3.6.0",
     "react-native-vector-icons": "^6.6.0",
-    "react-native-webrtc-kit": "git+https://github.com/react-native-webrtc-kit/react-native-webrtc-kit#feature/m84"
+    "react-native-webrtc-kit": "^2020.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
