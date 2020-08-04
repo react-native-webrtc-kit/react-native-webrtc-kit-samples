@@ -14,6 +14,7 @@ import {
   Button,
 } from 'react-native-paper';
 import {
+  WebRTC,
   RTCVideoView,
   RTCObjectFit,
   RTCLogger as logger,
@@ -21,6 +22,10 @@ import {
 } from 'react-native-webrtc-kit';
 import { Sora } from './Sora';
 import { url, defaultChannelId, signalingKey } from './app.json';
+
+if (Platform.OS === 'ios') {
+  WebRTC.setMicrophoneEnabled(true);
+}
 
 logger.setDebugMode(true);
 
