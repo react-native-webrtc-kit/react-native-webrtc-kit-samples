@@ -8,6 +8,10 @@
 [![Actions Status](https://github.com/react-native-webrtc-kit/react-native-webrtc-kit-samples/workflows/HelloAyame-iOS-Test/badge.svg)](https://github.com/shiguredo/react-native-webrtc-kit-samples/actions)
 [![Actions Status](https://github.com/react-native-webrtc-kit/react-native-webrtc-kit-samples/workflows/HelloAyame-Android-Test/badge.svg)](https://github.com/shiguredo/react-native-webrtc-kit-samples/actions)
 
+## 時雨堂のオープンソースソフトウェアについて
+
+利用前に https://github.com/shiguredo/oss をお読みください。
+
 ## ライセンス
 
 Apache License 2.0
