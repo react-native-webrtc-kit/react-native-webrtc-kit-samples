@@ -37,7 +37,7 @@ type State = {
   pubConn: Sora | null,
   subConn: Sora | null,
   senderTrack: RTCMediaStreamTrack | null;
-  receiverTrack: RTCMediaStreamTrack | null;
+  receiverTracks: RTCMediaStreamTrack | null; // TODO: 型定義の修正が必要
   objectFit: RTCObjectFit
 };
 
@@ -66,7 +66,7 @@ export default class App extends Component<Props, State> {
       pubConn: null,
       subConn: null,
       senderTrack: null,
-      receiverTrack: null,
+      receiverTracks: [],
       objectFit: 'cover'
     };
   }
@@ -95,15 +95,18 @@ export default class App extends Component<Props, State> {
             />
           }
           </View>
-          <View style={styles.div_header}>
-          {(this.state.subConn !== null && this.state.receiverTrack !== null) &&
-            <RTCVideoView
-              style={styles.videoview}
-              track={this.state.receiverTrack}
-              objectFit={this.state.objectFit}
-            />
+          {this.state.subConn === null || this.state.receiverTracks.length === 0 ?
+            <View style={styles.div_header} /> :
+            this.state.receiverTracks.map(receiverTrack => {
+              return <View style={styles.div_header}>
+                <RTCVideoView
+                  style={styles.videoview}
+                  track={receiverTrack}
+                  objectFit={this.state.objectFit}
+                />
+              </View>
+            })
           }
-          </View>
           <View style={{ flex: 1, flexDirection: 'column' }}>
             <TextInput
               label="チャネルID"
@@ -177,18 +180,20 @@ export default class App extends Component<Props, State> {
                       // event に receiver が含まれ、かつ track の種類が video の場合のみ処理を行う
                       if (!event.receiver || !event.track || event.track.kind !== 'video') return;
 
-                      // track の追加
-                      // state.receiverTrack が存在しない場合、 state に event.track を追加する
-                      if (!prev.receiverTrack) {
-                        logger.log('# receiver track added =>', event.track)
-                        return { receiverTrack: event.track };
-                      }
+                      let isNewTrack = prev.receiverTracks.length === prev.receiverTracks.filter(track => track.id !== event.track.id).length
 
-                      // track の削除
-                      // state.receiverTrack と event.track の id が同じ場合、 state から track を削除する
-                      if (prev.receiverTrack.id === event.track.id) {
+                      // 新しい track は receiverTracks に追加する
+                      if (isNewTrack) {
+                        logger.log('# receiver track added =>', event.track)
+                        return {
+                          receiverTrack: prev.receiverTracks.push(event.track)
+                        };
+                      } else {
+                        // 追加済みの track が ontracck で渡されてきた場合は receiverTracsk から削除する
                         logger.log('# receiver track removed');
-                        return { receiverTrack: null };
+                        return {
+                          receiverTracks: prev.receiverTracks.filter(receiverTrack => receiverTrack.id != event.track.id)
+                        };
                       }
                     });
                   }.bind(this);
@@ -215,7 +220,7 @@ export default class App extends Component<Props, State> {
                     pubConn: null,
                     subConn: null,
                     senderTrack: null,
-                    receiverTrack: null,
+                    receiverTracks: [],
                   }
                 });
               }}
