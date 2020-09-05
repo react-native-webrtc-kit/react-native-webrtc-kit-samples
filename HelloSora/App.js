@@ -142,8 +142,8 @@ export default class App extends Component<Props, State> {
               mode="outlined"
               onPress={() => {
                 this.setState(prev => {
-                  const role = this.state.multistream ? 'group' : 'publisher';
-                  const pubConn = new Sora(url, role, prev.channelId, signalingKey);
+                  const role = "sendonly";
+                  const pubConn = new Sora(url, role, this.state.multistream, prev.channelId, signalingKey);
                   pubConn.onconnectionstatechange = function (event) {
                     this.setState(prev => {
                       logger.log("# publisher connection state change => ",
@@ -170,8 +170,8 @@ export default class App extends Component<Props, State> {
               mode="outlined"
               onPress={() => {
                 this.setState(prev => {
-                  const role = this.state.multistream ? 'groupsub' : 'subscriber';
-                  const subConn = new Sora(url, role, prev.channelId, signalingKey);
+                  const role = "recvonly";
+                  const subConn = new Sora(url, role, this.state.multistream, prev.channelId, signalingKey);
                   subConn.ontrack = function (event) {
                     this.setState(prev => {
                       // event に receiver が含まれ、かつ track の種類が video の場合のみ処理を行う

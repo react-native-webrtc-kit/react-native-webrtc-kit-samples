@@ -7,7 +7,6 @@ import {
   RTCLogger as logger,
   RTCEvent,
   RTCIceServer,
-  RTCMediaConstraints,
   RTCMediaStream,
   RTCMediaStreamConstraints,
   RTCPeerConnection,
@@ -19,10 +18,9 @@ import {
  * @typedef {string} SoraRole
  */
 export type SoraRole =
-  | 'publisher'
-  | 'subscriber'
-  | 'group'
-  | 'groupsub'
+  | 'sendrecv'
+  | 'sendonly'
+  | 'recvonly'
 
 /**
  * @typedef {string} SoraVideoCodec
@@ -61,19 +59,6 @@ export type SoraSignalingType =
 
 export class SoraEvent extends RTCEvent { }
 
-function roleToString(role: SoraRole): string {
-  switch (role) {
-    case 'publisher':
-    case 'group':
-      return 'upstream';
-    case 'subscriber':
-    case 'groupsub':
-      return 'downstream';
-    default:
-      throw new Error('unknown role');
-  }
-}
-
 export class SoraSignalingMessage {
 
   type: SoraSignalingType;
@@ -95,7 +80,7 @@ export class SoraSignalingMessage {
     var json = {};
     json.type = this.type;
     if (this.role != null)
-      json.role = roleToString(this.role);
+      json.role = this.role;
     if (this.channelId != null)
       json.channel_id = this.channelId;
     if (this.metadata != null)
@@ -149,6 +134,11 @@ export class Sora extends SoraEventTarget {
    * ロール
    */
   role: SoraRole;
+
+  /**
+   * マルチストリーム
+   */
+  multistream: boolean;
 
   /**
    * チャネル ID
@@ -205,10 +195,11 @@ export class Sora extends SoraEventTarget {
   _ws: WebSocket;
   _pc: RTCPeerConnection;
 
-  constructor(url: string, role: SoraRole, channelId: string, signalingKey: string) {
+  constructor(url: string, role: SoraRole, multistream: boolean, channelId: string, signalingKey: string) {
     super();
     this.url = url;
     this.role = role;
+    this.multistream = multistream;
     this.channelId = channelId;
     this.metadata = {
       signaling_key: signalingKey,
@@ -223,14 +214,6 @@ export class Sora extends SoraEventTarget {
   }
 
   // ---- Public ---- 
-
-  isUpstream(): boolean {
-    return this.role == 'publisher' || this.role == 'group';
-  }
-
-  isMultistream(): boolean {
-    return this.role == 'group' || this.role == 'groupsub';
-  }
 
   _send(message: SoraSignalingMessage): void {
     if (this._ws != null) {
@@ -333,8 +316,7 @@ export class Sora extends SoraEventTarget {
         // 新しいローカルストリームを生成する
         var streamConsts = new RTCMediaStreamConstraints();
         getUserMedia(streamConsts).then((info) => {
-          // upstream: ベースとなる peer connection にセットする
-          if (this.isUpstream()) {
+          if (this.role === "sendrecv" || this.role === "sendonly") {
             logger.log("# Sora: add camera video stream");
             info.tracks.forEach(track =>
               this._pc.addTrack(track, [info.streamId])
@@ -353,7 +335,7 @@ export class Sora extends SoraEventTarget {
             connect.metadata = this.metadata;
 
           // マルチストリームの設定
-          if (this.isMultistream())
+          if (this.multistream)
             connect.multistream = true;
 
           // 映像の設定
@@ -458,7 +440,7 @@ export class Sora extends SoraEventTarget {
 
       case 'update':
         logger.log("# Sora: signaling 'update'");
-        if (!this.isMultistream()) {
+        if (!this.multistream) {
           logger.log("# Sora: not multistream, skipping");
           break;
         }
