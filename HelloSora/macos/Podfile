@@ -79,7 +79,10 @@ abstract_target 'Shared' do
 
   target 'HelloSora-macOS' do
     platform :macos, '10.13'
-    use_native_modules!
+
+    # TODO(enm10k): 後でコメントアウトを外す
+    #               npx react-native-macos-init がエラーになる原因になっていたので一時的にコメントアウトした
+    # use_native_modules!
 
     # Enables Hermes
     #
@@ -96,7 +99,10 @@ abstract_target 'Shared' do
 
   target 'HelloSora-iOS' do
     platform :ios, '9'
-    use_native_modules!
+
+    # TODO(enm10k): 後でコメントアウトを外す
+    #               npx react-native-macos-init がエラーになる原因になっていたので一時的にコメントアウトした
+    # use_native_modules!
 
     # Enables Flipper.
     #
