@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "react": "16.13.1",
-    "react-native": "0.63.2"
+    "react-native": "0.63.2",
+    "react-native-paper": "^4.2.0",
+    "react-native-vector-icons": "^7.1.0",
+    "react-native-webrtc-kit": "https://github.com/react-native-webrtc-kit/react-native-webrtc-kit.git#feature/simulcast"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
