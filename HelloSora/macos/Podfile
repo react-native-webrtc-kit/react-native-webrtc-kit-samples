@@ -1,3 +1,6 @@
+source 'https://github.com/enm10k/sora-ios-sdk-specs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 def add_flipper_pods!(versions = {})
@@ -80,9 +83,7 @@ abstract_target 'Shared' do
   target 'HelloSora-macOS' do
     platform :macos, '10.13'
 
-    # TODO(enm10k): 後でコメントアウトを外す
-    #               npx react-native-macos-init がエラーになる原因になっていたので一時的にコメントアウトした
-    # use_native_modules!
+    use_native_modules!
 
     # Enables Hermes
     #
@@ -98,11 +99,9 @@ abstract_target 'Shared' do
   end
 
   target 'HelloSora-iOS' do
-    platform :ios, '9'
+    platform :ios, '12'
 
-    # TODO(enm10k): 後でコメントアウトを外す
-    #               npx react-native-macos-init がエラーになる原因になっていたので一時的にコメントアウトした
-    # use_native_modules!
+    use_native_modules!
 
     # Enables Flipper.
     #
