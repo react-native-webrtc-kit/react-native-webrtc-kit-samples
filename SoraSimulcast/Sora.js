@@ -245,30 +245,6 @@ export class Sora extends SoraEventTarget {
     }
   }
 
-  getLocalStream(): RTCMediaStream | null {
-    if (this._pc == null) {
-      return null;
-    }
-    const streams = this._pc.getLocalStreams();
-    if (streams && streams.length > 0) {
-      return streams[0];
-    } else {
-      return null;
-    }
-  }
-
-  getRemoteStream(): RTCMediaStream | null {
-    if (this._pc == null) {
-      return null;
-    }
-    const streams = this._pc.getRemoteStreams();
-    if (streams && streams.length > 0) {
-      return streams[0];
-    } else {
-      return null;
-    }
-  }
-
   // ---- Private ---- 
 
   _setConnectionState(state: SoraConnectionState): void {
@@ -306,6 +282,15 @@ export class Sora extends SoraEventTarget {
       info.tracks.forEach(track =>
         offerPc.addTrack(track, [info.streamId])
       );
+      const tracks = info.tracks.getVideoTracks();
+      offerPc.addTransceiver(tracks[0], {
+        direction: 'sendonly',
+        sendEncodings: [
+          {rid: 'q', scaleResolutionDownBy: 4.0}
+          {rid: 'h', scaleResolutionDownBy: 2.0},
+          {rid: 'f'},
+        ]
+      });
       offerPc.createOffer(new RTCMediaStreamConstraints()).then((sdp) => {
         logger.log("# Sora: offer => ", sdp.sdp);
 

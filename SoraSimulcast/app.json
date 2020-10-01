@@ -1,4 +1,7 @@
 {
   "name": "SoraSimulcast",
-  "displayName": "SoraSimulcast"
+  "displayName": "SoraSimulcast",
+  "url": "wss://sora-labo.shiguredo.jp/signaling",
+  "defaultChannelId": "*** SET YOUR GITHUB USER NAME ***@sora-labo",
+  "signalingKey": "*** SET YOUR SIGNALING KEY ***"
 }
