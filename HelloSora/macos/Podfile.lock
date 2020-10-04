@@ -464,9 +464,9 @@ SPEC CHECKSUMS:
   React-RCTText: 87bd51dbdb9f701760924b535be9e41e1f80aad9
   React-RCTVibration: 5c1a6bf9e28ef049bf4f5abc82bb2d9707def273
   ReactCommon: 658d0557123c61326f5b8769cb88cc6886a30497
-  ReactNativeWebRTCKit: 7bbbe39c74f71cfdab1199cdc49800b12f95f42d
+  ReactNativeWebRTCKit: 9a711f0a25bb457283550b710662f5af40d2739f
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
-  WebRTC: ade91d3a74d08718af4de646c29c3d0fd8a47759
+  WebRTC: 2b76caaabc6bfccc930ed31e11b724d75afe0062
   Yoga: e64d2b3528e7b1449411a4e7db07f651f1b1c241
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
