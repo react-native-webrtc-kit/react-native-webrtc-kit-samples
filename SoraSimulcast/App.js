@@ -33,7 +33,6 @@ type Props = {};
 
 type State = {
   channelId: string,
-  multistream: bool,
   pubConn: Sora | null,
   senderTrack: RTCMediaStreamTrack | null;
   objectFit: RTCObjectFit
@@ -60,7 +59,6 @@ export default class App extends Component<Props, State> {
     super(props);
     this.state = {
       channelId: defaultChannelId,
-      multistream: false,
       pubConn: null,
       senderTrack: null,
       objectFit: 'cover'
@@ -118,7 +116,7 @@ export default class App extends Component<Props, State> {
               onPress={() => {
                 this.setState(prev => {
                   const role = "sendonly";
-                  const pubConn = new Sora(url, role, this.state.multistream, prev.channelId, signalingKey);
+                  const pubConn = new Sora(url, role, false, prev.channelId, signalingKey);
                   pubConn.onconnectionstatechange = function (event) {
                     this.setState(prev => {
                       logger.log("# publisher connection state change => ",
