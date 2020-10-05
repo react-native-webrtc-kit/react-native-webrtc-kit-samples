@@ -79,6 +79,9 @@ export default class App extends Component<Props, State> {
     return (
       <View style={styles.body}>
         <View style={styles.div_content}>
+          <Text style={styles.title}>
+            サイマルキャスト送信
+          </Text>
           <Text style={styles.instructions}>
             {instructions}
           </Text>
@@ -106,21 +109,6 @@ export default class App extends Component<Props, State> {
               value={this.state.channelId}
               placeholder='Channel ID'
             />
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-              <Switch
-                value={this.state.multistream}
-                onValueChange={() => {
-                  this.setState({ multistream: !this.state.multistream });
-                }}
-              />
-              <Text
-                onPress={(_value) => {
-                  this.setState({ multistream: !this.state.multistream });
-                }}
-              >
-                マルチストリーム
-              </Text>
-            </View>
           </View>
           <View>
             <Button
@@ -190,6 +178,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     backgroundColor: '#F5FCFF',
     padding: 30
+  },
+  title: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginBottom: 10,
+    fontWeight: 'bold'
   },
   div_header: {
     width: '100%',
