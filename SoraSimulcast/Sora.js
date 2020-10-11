@@ -286,7 +286,7 @@ export class Sora extends SoraEventTarget {
       offerPc.addTransceiver(tracks[0], {
         direction: 'sendonly',
         sendEncodings: [
-          {rid: 'q', scaleResolutionDownBy: 4.0}
+          {rid: 'q', scaleResolutionDownBy: 4.0},
           {rid: 'h', scaleResolutionDownBy: 2.0},
           {rid: 'f'},
         ]
