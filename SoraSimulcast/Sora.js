@@ -282,8 +282,8 @@ export class Sora extends SoraEventTarget {
       info.tracks.forEach(track =>
         offerPc.addTrack(track, [info.streamId])
       );
-      const tracks = info.tracks.getVideoTracks();
-      offerPc.addTransceiver(tracks[0], {
+      const track = info.tracks.find(t => t.kind === 'video');
+      offerPc.addTransceiver(track, {
         direction: 'sendonly',
         sendEncodings: [
           {rid: 'q', scaleResolutionDownBy: 4.0},

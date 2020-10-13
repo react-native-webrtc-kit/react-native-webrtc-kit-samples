@@ -58,7 +58,7 @@ export default class App extends Component<Props, State> {
   constructor(props: Object) {
     super(props);
     this.state = {
-      channelId: defaultChannelId,
+      channelId: 'kdxu@sora-labo',// defaultChannelId,
       pubConn: null,
       senderTrack: null,
       objectFit: 'cover'
