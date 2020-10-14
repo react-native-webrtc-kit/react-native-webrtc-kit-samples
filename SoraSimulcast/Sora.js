@@ -13,6 +13,7 @@ import {
   RTCSessionDescription,
   getUserMedia
 } from 'react-native-webrtc-kit';
+import {RTCUserMedia} from 'react-native-webrtc-kit/src/MediaDevice/getUserMedia';
 
 /**
  * @typedef {string} SoraRole
@@ -194,6 +195,7 @@ export class Sora extends SoraEventTarget {
 
   _ws: WebSocket;
   _pc: RTCPeerConnection;
+  _info: RTCUserMedia;
 
   constructor(url: string, role: SoraRole, multistream: boolean, channelId: string, signalingKey: string) {
     super();
@@ -282,15 +284,6 @@ export class Sora extends SoraEventTarget {
       info.tracks.forEach(track =>
         offerPc.addTrack(track, [info.streamId])
       );
-      const track = info.tracks.find(t => t.kind === 'video');
-      offerPc.addTransceiver(track, {
-        direction: 'sendonly',
-        sendEncodings: [
-          {rid: 'q', scaleResolutionDownBy: 4.0},
-          {rid: 'h', scaleResolutionDownBy: 2.0},
-          {rid: 'f'},
-        ]
-      });
       offerPc.createOffer(new RTCMediaStreamConstraints()).then((sdp) => {
         logger.log("# Sora: offer => ", sdp.sdp);
 
@@ -319,9 +312,8 @@ export class Sora extends SoraEventTarget {
           if (this.metadata != null)
             connect.metadata = this.metadata;
 
-          // マルチストリームの設定
-          if (this.multistream)
-            connect.multistream = true;
+          // サイマルキャストの設定
+          connect.simulcast = true;
 
           // 映像の設定
           if (this.video == false) {
@@ -358,6 +350,7 @@ export class Sora extends SoraEventTarget {
             connect.spotlight = this.spotlight;
           }
 
+          this._info = info;
           this._send(connect);
         })
       })
@@ -396,6 +389,15 @@ export class Sora extends SoraEventTarget {
               iceServer.credential));
           }
         }
+        if (signal.encodings && Array.isArray(signal.encodings)) {
+          const sendEncodings = signal.encodings;
+          const track = this._info.tracks.find(t => t.kind === 'video');
+          this._pc.addTransceiver(track, {
+            direction: 'sendonly',
+            sendEncodings: signal.encodings
+          });
+        };
+
 
         this.configuration.iceServers = iceServers;
         this.configuration.iceTransportPolicy = signal.config.iceTransportPolicy;
