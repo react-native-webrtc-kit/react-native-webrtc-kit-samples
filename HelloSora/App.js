@@ -22,6 +22,7 @@ import {
 } from 'react-native-webrtc-kit';
 import { Sora } from './Sora';
 import { url, defaultChannelId, signalingKey } from './app.json';
+import AudioSession from 'react-native-audio-session';
 
 if (Platform.OS === 'ios') {
   WebRTC.setMicrophoneEnabled(true);
@@ -55,6 +56,33 @@ async function requestPermissionsAndroid() {
   }
 }
 
+async function logIOSAudioSession() {
+  try {
+    const category = await AudioSession.currentCategory();
+    // const categoryOptions = await AudioSession.currentCategoryOptions();
+    const mode = await AudioSession.currentMode();
+    const data = {
+      category: category,
+      // categoryOptions: categoryOptions,
+      mode: mode,
+    }
+    logger.log(`# iOS AudioSession => ${JSON.stringify(data)}`);
+    alert(JSON.stringify(data));
+  } catch (err) {
+    logger.error(err);
+  }
+}
+
+const IOS_AUDIO_MODE_DEFAULT = 'Default';
+const IOS_AUDIO_MODE_VOICE_CHAT = 'VoiceChat';
+const IOS_AUDIO_MODE_VIDEO_CHAT = 'VideoChat';
+async function setIOSAudioMode(audioMode) {
+  try {
+    await AudioSession.setMode(audioMode);
+  } catch (err) {
+    logger.error(err);
+  }
+}
 
 export default class App extends Component<Props, State> {
 
@@ -181,6 +209,11 @@ export default class App extends Component<Props, State> {
                       // state.receiverTrack が存在しない場合、 state に event.track を追加する
                       if (!prev.receiverTrack) {
                         logger.log('# receiver track added =>', event.track)
+                        if (Platform.OS === 'ios') {
+                          logIOSAudioSession();
+                          setIOSAudioMode(IOS_AUDIO_MODE_VIDEO_CHAT);
+                          logIOSAudioSession();
+                        }
                         return { receiverTrack: event.track };
                       }
 
