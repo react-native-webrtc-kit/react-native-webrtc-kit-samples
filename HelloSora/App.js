@@ -59,15 +59,15 @@ async function requestPermissionsAndroid() {
 async function logIOSAudioSession() {
   try {
     const category = await AudioSession.currentCategory();
-    // const categoryOptions = await AudioSession.currentCategoryOptions();
+    const categoryOptions = await AudioSession.currentCategoryOptions();
     const mode = await AudioSession.currentMode();
     const data = {
       category: category,
-      // categoryOptions: categoryOptions,
+      categoryOptions: categoryOptions,
       mode: mode,
     }
     logger.log(`# iOS AudioSession => ${JSON.stringify(data)}`);
-    alert(JSON.stringify(data));
+    // alert(JSON.stringify(data)); // デバッグ
   } catch (err) {
     logger.error(err);
   }
@@ -76,9 +76,12 @@ async function logIOSAudioSession() {
 const IOS_AUDIO_MODE_DEFAULT = 'Default';
 const IOS_AUDIO_MODE_VOICE_CHAT = 'VoiceChat';
 const IOS_AUDIO_MODE_VIDEO_CHAT = 'VideoChat';
-async function setIOSAudioMode(audioMode) {
+async function setIOSAudioModeToVideoChat() {
   try {
-    await AudioSession.setMode(audioMode);
+    // await AudioSession.setMode(audioMode);
+    await logIOSAudioSession();
+    await AudioSession.setCategoryAndMode('PlayAndRecord', 'VideoChat', 'MixWithOthers');
+    await logIOSAudioSession();
   } catch (err) {
     logger.error(err);
   }
@@ -210,9 +213,7 @@ export default class App extends Component<Props, State> {
                       if (!prev.receiverTrack) {
                         logger.log('# receiver track added =>', event.track)
                         if (Platform.OS === 'ios') {
-                          logIOSAudioSession();
-                          setIOSAudioMode(IOS_AUDIO_MODE_VIDEO_CHAT);
-                          logIOSAudioSession();
+                          setIOSAudioModeToVideoChat();
                         }
                         return { receiverTrack: event.track };
                       }
