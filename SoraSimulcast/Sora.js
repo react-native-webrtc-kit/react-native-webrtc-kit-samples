@@ -67,7 +67,8 @@ export class SoraSignalingMessage {
   channelId: string | null;
   metadata: string | null = null;
   sdp: RTCSessionDescription | null = null;
-  multistream: bool | null = null;
+  multistream: boolean | null = null;
+  simulcast: boolean | null = null;
   video: boolean | Object | null = null;
   audio: boolean | Object | null = null;
   spotlight: number | null = null;
@@ -96,11 +97,12 @@ export class SoraSignalingMessage {
       json.audio = this.audio;
     if (this.spotlight != null)
       json.spotlight = this.spotlight;
+    if (this.simulcast != null)
+      json.simulcast = this.simulcast;
     if (this.candidate != null)
       json.candidate = this.candidate;
     return json;
   }
-
 }
 
 /**
@@ -205,6 +207,8 @@ export class Sora extends SoraEventTarget {
     this.channelId = channelId;
     this.metadata = {
       signaling_key: signalingKey,
+      turn_tls_only: false,
+      turn_tcp_only: false,
     };
 
     this.configuration = new RTCConfiguration();
@@ -314,7 +318,8 @@ export class Sora extends SoraEventTarget {
 
           // サイマルキャストの設定
           connect.simulcast = true;
-
+          connect.sora_client = "RNKit SoraSimulcast";
+          connect.environment = "Android";
           // 映像の設定
           if (this.video == false) {
             connect.video = false;
@@ -343,11 +348,6 @@ export class Sora extends SoraEventTarget {
             } else if (this.audio == true) {
               connect.audio = true;
             }
-          }
-
-          // スポットライトの設定
-          if (this.role == 'group' && this.spotlight != null) {
-            connect.spotlight = this.spotlight;
           }
 
           this._info = info;
@@ -389,15 +389,22 @@ export class Sora extends SoraEventTarget {
               iceServer.credential));
           }
         }
+        console.log('signal->', signal);
         if (signal.encodings && Array.isArray(signal.encodings)) {
+          const track = this._info.tracks.find(t => {
+            if(t.mid && 0 <= t.mid.indexOf('video') && t.currentDirection == null) {
+              return t;
+            }
+          });
+          if (!track) {
+            throw new Error('simulcast error');
+          }
           const sendEncodings = signal.encodings;
-          const track = this._info.tracks.find(t => t.kind === 'video');
           this._pc.addTransceiver(track, {
             direction: 'sendonly',
-            sendEncodings: signal.encodings
+            sendEncodings: sendEncodings
           });
-        };
-
+        }
 
         this.configuration.iceServers = iceServers;
         this.configuration.iceTransportPolicy = signal.config.iceTransportPolicy;
