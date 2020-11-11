@@ -21,8 +21,9 @@ import {
   RTCMediaStreamTrack,
 } from 'react-native-webrtc-kit';
 import { Sora } from './Sora';
-import { url, defaultChannelId, signalingKey } from './app.json';
+import { url } from './app.json';
 
+const signalingKey = 'E5auavfBEch3SxKJLiffiqEm732WHooZ1Tq4vZmnl-0Hbw-p';
 if (Platform.OS === 'ios') {
   WebRTC.setMicrophoneEnabled(true);
 }
@@ -115,8 +116,7 @@ export default class App extends Component<Props, State> {
               mode="outlined"
               onPress={() => {
                 this.setState(prev => {
-                  const role = "sendonly";
-                  const pubConn = new Sora(url, role, false, prev.channelId, signalingKey);
+                  const pubConn = new Sora(url, 'sendonly', false, prev.channelId, signalingKey);
                   pubConn.onconnectionstatechange = function (event) {
                     this.setState(prev => {
                       logger.log("# publisher connection state change => ",
