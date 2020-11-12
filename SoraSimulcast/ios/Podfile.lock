@@ -296,6 +296,12 @@ PODS:
     - React-Core (= 0.63.2)
     - React-cxxreact (= 0.63.2)
     - React-jsi (= 0.63.2)
+  - ReactNativeWebRTCKit (2020.6.0):
+    - React
+    - WebRTC (~> 86.4240.1.2)
+  - RNVectorIcons (7.1.0):
+    - React
+  - WebRTC (86.4240.1.2)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -347,9 +353,13 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - ReactNativeWebRTCKit (from `../node_modules/react-native-webrtc-kit`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
+  https://github.com/shiguredo/sora-ios-sdk-specs.git:
+    - WebRTC
   trunk:
     - boost-for-react-native
     - CocoaAsyncSocket
@@ -415,6 +425,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeWebRTCKit:
+    :path: "../node_modules/react-native-webrtc-kit"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -455,9 +469,12 @@ SPEC CHECKSUMS:
   React-RCTText: 1b6773e776e4b33f90468c20fe3b16ca3e224bb8
   React-RCTVibration: 4d2e726957f4087449739b595f107c0d4b6c2d2d
   ReactCommon: a0a1edbebcac5e91338371b72ffc66aa822792ce
+  ReactNativeWebRTCKit: dcf0330f4f9744139c1f929d5a7f2aa555431a6e
+  RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
+  WebRTC: 5d6be27ac7c1f762c57bc1728f9f8d279274858f
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 489f554a9f63735ab728c173f48d4256d4bc32e2
+PODFILE CHECKSUM: 6e1d03cbf02a51f1e16397331b7fd431fe3c6977
 
 COCOAPODS: 1.9.3
