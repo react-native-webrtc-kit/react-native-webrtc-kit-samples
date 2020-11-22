@@ -9,7 +9,7 @@ jobs:
       matrix:
         node-version: [11.x]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: set up Java
         uses: actions/setup-java@v1
         with:
