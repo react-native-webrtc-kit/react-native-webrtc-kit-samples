@@ -367,7 +367,7 @@ SPEC REPOS:
     - FlipperKit
     - OpenSSL-Universal
     - YogaKit
-  https://github.com/shiguredo/sora-ios-sdk-specs.git:
+  https://github.com/react-native-webrtc-kit/webrtc-ios.git:
     - WebRTC
 
 EXTERNAL SOURCES:
@@ -462,12 +462,12 @@ SPEC CHECKSUMS:
   React-RCTText: fae545b10cfdb3d247c36c56f61a94cfd6dba41d
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
-  ReactNativeWebRTCKit: 2a0acf125ca5e80597bc2233d1992c75345f34c6
+  ReactNativeWebRTCKit: a737f2f2e73dbfab1b609a65e161cf228cc82e28
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
-  WebRTC: 5d6be27ac7c1f762c57bc1728f9f8d279274858f
+  WebRTC: e3b7bd6a2fe5416fd355cfd525d90d8d8bb865b4
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 2e2fde23eeb952510ca88bb8c302cdbe02ad9b7b
+PODFILE CHECKSUM: 827a75496e4fa18a80555e0e199c628bb0c655aa
 
 COCOAPODS: 1.9.1
