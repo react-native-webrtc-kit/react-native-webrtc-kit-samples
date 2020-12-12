@@ -72,18 +72,22 @@ const App: () => React.ReactNode = () => {
     <View style={styles.body}>
       <View style={styles.div_content}>
         <View style={styles.div_header}>
+        {(conn !== null && sender !== null && sender.track !== null) &&
           <RTCVideoView
             style={styles.videoview}
-            track={sender ? sender.track : null}
+            track={sender.track}
             objectFit={objectFit}
           />
+        }
         </View>
         <View style={styles.div_header}>
+        {(conn !== null && receiver !== null && receiver.track !== null) &&
           <RTCVideoView
             style={styles.videoview}
-            track={receiver ? receiver.track : null}
+            track={receiver.track}
             objectFit={objectFit}
           />
+        }
         </View>
         <View style={{flex: 1, flexDirection: 'column'}}>
           <TextInput
